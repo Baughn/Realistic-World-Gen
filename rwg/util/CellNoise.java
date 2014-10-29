@@ -35,11 +35,9 @@ import java.util.Random;
  */
 public class CellNoise 
 {
-	//for speed, we can approximate the sqrt term in the distance funtions
 	private static final double SQRT_2 = 1.4142135623730950488;
 	private static final double SQRT_3 = 1.7320508075688772935;
 
-	//You can either use the feature point height (for biomes or solid pillars), or the distance to the feature point
 	private boolean useDistance = false;
 	
 	private long seed;
@@ -151,6 +149,66 @@ public class CellNoise
 		else return ((float)CellNoise.valueNoise2D (
 		       (int)(Math.floor (xCandidate)),
 		       (int)(Math.floor (zCandidate)), seed));
+	}
+	
+	public float border(double x, double z, double width, float depth) 
+	{
+		x *= 1D;
+		z *= 1D;
+
+		int xInt = (x > .0? (int)x: (int)x - 1);
+		int zInt = (z > .0? (int)z: (int)z - 1);
+
+		double dCandidate = 32000000.0;
+		double xCandidate = 0;
+		double zCandidate = 0;
+		
+		double dNeighbour = 32000000.0;
+		double xNeighbour = 0;
+		double zNeighbour = 0;
+
+		for(int zCur = zInt - 2; zCur <= zInt + 2; zCur++) 
+		{
+			for(int xCur = xInt - 2; xCur <= xInt + 2; xCur++) 
+			{
+
+				double xPos = xCur + valueNoise2D(xCur, zCur, seed);
+				double zPos = zCur + valueNoise2D(xCur, zCur, new Random(seed).nextLong());
+				double xDist = xPos - x;
+				double zDist = zPos - z;
+				//double dist = xDist * xDist + zDist * zDist;
+				double dist = getDistance2D(xPos - x, zPos - z);
+				
+				if(dist < dCandidate) 
+				{
+					dNeighbour = dCandidate;
+					dCandidate = dist;
+					
+					/*dNeighbour = dCandidate;
+					xNeighbour = xCandidate;
+					zNeighbour = zCandidate;
+					
+					dCandidate = dist;
+					xCandidate = xPos;
+					zCandidate = zPos;*/
+				}
+				else if(dist < dNeighbour)
+				{
+					dNeighbour = dist;
+				}
+			}
+		}
+		
+		//double c = getDistance2D(xNeighbour - x, zNeighbour - z) - getDistance2D(xCandidate - x, zCandidate - z);
+		double c = dNeighbour - dCandidate;
+		if(c < width)
+		{
+			return (((float)(c / width)) - 1f) * depth;
+		}
+		else
+		{
+			return 0f;
+		}
 	}
 
 	public double noise(double x, double y, double z, double frequency) 

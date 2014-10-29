@@ -139,7 +139,7 @@ public class ChunkManagerRealistic extends WorldChunkManager
     
     public RealisticBiomeBase getBiomeDataAt(int par1, int par2, float ocean)
     {
-    	//return RealisticBiomeBase.landRedwoodSpikes;
+    	//return RealisticBiomeBase.high;
     	
     	/*if(par1 + par2 < 0)
     	{
