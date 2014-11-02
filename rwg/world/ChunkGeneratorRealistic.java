@@ -65,6 +65,11 @@ public class ChunkGeneratorRealistic implements IChunkProvider
     private final int parabolicArraySize;
     private final float[] parabolicField;
     private float parabolicFieldTotal;
+
+    private int[] biomeData;
+    private float[][] hugeRender;
+    private float[][] smallRender;
+    private float[] testHeight;
 	
     public ChunkGeneratorRealistic(World world, long l)
     {
@@ -98,6 +103,11 @@ public class ChunkGeneratorRealistic implements IChunkProvider
                 parabolicFieldTotal += f;
             }
         }
+        
+        biomeData = new int[sampleArraySize * sampleArraySize];
+    	hugeRender = new float[81][256];
+    	smallRender = new float[625][256];
+    	testHeight = new float[256];
     }
 
     public Chunk provideChunk(int cx, int cy)
@@ -106,7 +116,7 @@ public class ChunkGeneratorRealistic implements IChunkProvider
         Block[] blocks = new Block[65536];
         byte[] metadata = new byte[65536];
         float[] noise = new float[256];
-        biomesForGeneration = new RealisticBiomeBase[256];//cmr.getBiomesGensData(cx * 16, cy * 16, 16, 16);
+        biomesForGeneration = new RealisticBiomeBase[256];
         
         generateTerrain(cmr, cx, cy, blocks, metadata, biomesForGeneration, noise);
         replaceBlocksForBiome(cx, cy, blocks, metadata, biomesForGeneration, noise);
@@ -182,7 +192,6 @@ public class ChunkGeneratorRealistic implements IChunkProvider
     {
     	int i, j, k, l, m, n, p;
     	
-    	int[] biomeData = new int[sampleArraySize * sampleArraySize];
     	for(i = -sampleSize; i < sampleSize + 5; i++)
     	{
     		for(j = -sampleSize; j < sampleSize + 5; j++)
@@ -190,13 +199,12 @@ public class ChunkGeneratorRealistic implements IChunkProvider
     			biomeData[(i + sampleSize) * sampleArraySize + (j + sampleSize)] = cmr.getBiomeDataAt(x + ((i * 8) - 8), y + ((j * 8) - 8)).biomeID;
     		}
     	}
-    	
-    	float[][] hugeRender = new float[81][256];
-    	float[][] smallRender = new float[625][256];
+
     	for(i = -1; i < 4; i++)
     	{
         	for(j = -1; j < 4; j++)
         	{
+        		hugeRender[(i * 2 + 2) * 9 + (j * 2 + 2)] = new float[256];
         		for(k = -parabolicSize; k <= parabolicSize; k++)
         		{
         			for(l = -parabolicSize; l <= parabolicSize; l++)
@@ -207,13 +215,12 @@ public class ChunkGeneratorRealistic implements IChunkProvider
         		
         	}
     	}
-    	biomeData = null;
     	
     	//MAIN BIOME CHECK
     	RealisticBiomeBase b = null;
     	for(i = 0; i < 256; i++)
     	{
-    		if(hugeRender[4 * 9 + 4][i] > 0.9f)
+    		if(hugeRender[4 * 9 + 4][i] > 0.95f)
     		{
     			b = RealisticBiomeBase.getBiome(i);
     		}
@@ -251,7 +258,6 @@ public class ChunkGeneratorRealistic implements IChunkProvider
     			}
     		} 
     	}
-    	hugeRender = null;
     	
     	//RENDER SMALL 1
     	for(i = 0; i < 6; i++)
@@ -323,7 +329,6 @@ public class ChunkGeneratorRealistic implements IChunkProvider
     		}
     	}
     	
-    	float[] testHeight = new float[256];
     	for(i = 0; i < 16; i++)
     	{
     		for(j = 0; j < 16; j++)
@@ -337,6 +342,8 @@ public class ChunkGeneratorRealistic implements IChunkProvider
     			
     			float ocean = cmr.getOceanValue(x, y);
     			l = ((int)(i + 4) * 25 + (j + 4));
+    			
+    			testHeight[i * 16 + j] = 0f;
     			
     			for(k = 0; k < 256; k++)
     			{

@@ -139,7 +139,7 @@ public class ChunkManagerRealistic extends WorldChunkManager
     
     public RealisticBiomeBase getBiomeDataAt(int par1, int par2, float ocean)
     {
-    	//return RealisticBiomeBase.high;
+    	return RealisticBiomeBase.landTaigaHillsSpikes;
     	
     	/*if(par1 + par2 < 0)
     	{
@@ -150,6 +150,7 @@ public class ChunkManagerRealistic extends WorldChunkManager
 			return RealisticBiomeBase.landTaigaHills;
 		}*/
     	
+    	/*
     	float h = (biomecell.noise(par1 / 450D, par2 / 450D, 1D) * 0.5f) + 0.5f;
     	h = h < 0f ? 0f : h >= 0.9999999f ? 0.9999999f : h;
 
@@ -189,6 +190,7 @@ public class ChunkManagerRealistic extends WorldChunkManager
     		h *= 9f;
     		return biomes_taiga[(int)(h)];
     	}
+    	*/
     	
     	//int x = (int)(temp * 7f);
     	//int y = (int)(hum * 7f);
