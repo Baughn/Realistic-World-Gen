@@ -126,7 +126,7 @@ public class RealisticBiomeBase
     	return 63f;
     }
     
-    public void rReplace(Block[] blocks, byte[] metadata, int i, int j, int x, int y, int depth, Random rand, PerlinNoise perlin, CellNoise cell, float[] noise)
+    public void rReplace(Block[] blocks, byte[] metadata, int i, int j, int x, int y, int depth, World world, Random rand, PerlinNoise perlin, CellNoise cell, float[] noise)
     {
     	Block b;
 		for(int k = 255; k > -1; k--)

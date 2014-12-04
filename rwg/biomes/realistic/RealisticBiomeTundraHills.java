@@ -238,7 +238,7 @@ public class RealisticBiomeTundraHills extends RealisticBiomeBase
     }
 
     @Override
-	public void rReplace(Block[] blocks, byte[] metadata, int i, int j, int x, int y, int depth, Random rand, PerlinNoise perlin, CellNoise cell, float[] noise) 
+	public void rReplace(Block[] blocks, byte[] metadata, int i, int j, int x, int y, int depth, World world, Random rand, PerlinNoise perlin, CellNoise cell, float[] noise) 
     {
 		float p = perlin.noise2(i / 8f, j / 8f) * 0.5f;
 		float c = CliffCalculator.calc(x, y, noise);

@@ -12,6 +12,7 @@ import rwg.biomes.base.BaseBiomes;
 import rwg.config.ConfigRWG;
 import rwg.data.TreeReplacement;
 import rwg.data.VillageMaterials;
+import rwg.support.BiomeSupport;
 import rwg.world.WorldTypeRealistic;
 
 @Mod(modid="RWG", name="RealisticWorldGen", version="Alpha 1.1")
@@ -43,5 +44,6 @@ public class RWG
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) 
 	{
+		BiomeSupport.init();
 	}
 }

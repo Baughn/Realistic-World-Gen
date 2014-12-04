@@ -10,7 +10,7 @@ public class BaseBiomeColdPlains extends BiomeGenBase
 	{
 		super(id);
 		setTemperatureRainfall(0.2f, 0.2f);
-		setBiomeName("RWG - BiomeType: Cold Plains");
+		setBiomeName("RWGcoldPlains");
 		spawnableCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityWolf.class, 5, 2, 3));
         spawnableCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityHorse.class, 5, 2, 3));
 	}

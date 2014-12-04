@@ -13,7 +13,7 @@ public class BaseBiomePlains extends BiomeGenBase
 	{
 		super(id);
 		setTemperatureRainfall(0.6f, 0.4f);
-		setBiomeName("RWG - BiomeType: Plains");
+		setBiomeName("RWGplains");
         spawnableCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityHorse.class, 3, 2, 3));
 	}
 }

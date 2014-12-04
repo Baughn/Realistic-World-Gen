@@ -15,6 +15,7 @@ import rwg.biomes.realistic.RealisticBiomeTaigaPlains;
 import rwg.biomes.realistic.RealisticBiomeTundraHills;
 import rwg.biomes.realistic.RealisticBiomeTundraLakes;
 import rwg.biomes.realistic.RealisticBiomeTundraPlains;
+import rwg.support.BiomeSupport;
 import rwg.util.CellNoise;
 import rwg.util.PerlinNoise;
 import net.minecraft.world.ChunkPosition;
@@ -139,7 +140,13 @@ public class ChunkManagerRealistic extends WorldChunkManager
     
     public RealisticBiomeBase getBiomeDataAt(int par1, int par2, float ocean)
     {
-    	return RealisticBiomeBase.landTaigaHillsSpikes;
+    	float h = (biomecell.noise(par1 / 450D, par2 / 450D, 1D) * 0.5f) + 0.5f;
+    	h = h < 0f ? 0f : h >= 0.9999999f ? 0.9999999f : h;
+    	
+    	//h *= BiomeSupport.biomesLength;
+    	return BiomeSupport.biomes.get(0);//(int)(h));
+    	
+    	//return RealisticBiomeBase.landRedwoodSpikes;
     	
     	/*if(par1 + par2 < 0)
     	{

@@ -114,7 +114,7 @@ public class RealisticBiomeTestHeight extends RealisticBiomeBase
     }
 	
     @Override
-    public void rReplace(Block[] blocks, byte[] metadata, int i, int j, int x, int y, int depth, Random rand, PerlinNoise perlin, CellNoise cell, float[] noise)
+    public void rReplace(Block[] blocks, byte[] metadata, int i, int j, int x, int y, int depth, World world, Random rand, PerlinNoise perlin, CellNoise cell, float[] noise)
     {
 		float pX = i + (perlin.noise1(j / 40f) * 50f);
 		float pY = j + (perlin.noise1(i / 40f) * 50f);

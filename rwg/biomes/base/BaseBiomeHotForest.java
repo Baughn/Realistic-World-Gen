@@ -12,7 +12,7 @@ public class BaseBiomeHotForest extends BiomeGenBase
 	{
 		super(id);
 		setTemperatureRainfall(0.8f, 0.2f);
-		setBiomeName("RWG - BiomeType: Hot Forest");
+		setBiomeName("RWGhotForest");
 	}
 	
     @SideOnly(Side.CLIENT)

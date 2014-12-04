@@ -395,7 +395,7 @@ public class ChunkGeneratorRealistic implements IChunkProvider
     			RealisticBiomeBase biome = biomes[i * 16 + j];
     			int depth = -1;
                 
-    			biome.rReplace(blocks, metadata, cx * 16 + j, cy * 16 + i, i, j, depth, rand, perlin, cell, n);
+    			biome.rReplace(blocks, metadata, cx * 16 + j, cy * 16 + i, i, j, depth, worldObj, rand, perlin, cell, n);
     			
     			blocks[(j * 16 + i) * 256] = Blocks.bedrock;
     		}

@@ -74,7 +74,7 @@ public class RealisticBiomeSaltLakes extends RealisticBiomeBase
     }
 
     @Override
-    public void rReplace(Block[] blocks, byte[] metadata, int i, int j, int x, int y, int depth, Random rand, PerlinNoise perlin, CellNoise cell, float[] noise)
+    public void rReplace(Block[] blocks, byte[] metadata, int i, int j, int x, int y, int depth, World world, Random rand, PerlinNoise perlin, CellNoise cell, float[] noise)
     {
 		float c = CliffCalculator.calc(x, y, noise);
 		boolean cliff = false;

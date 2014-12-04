@@ -14,7 +14,7 @@ public class BaseBiomeRedwood extends BiomeGenBase
 	{
 		super(id);
 		setTemperatureRainfall(0.7f, 0.6f);
-		setBiomeName("RWG - BiomeType: Redwood");
+		setBiomeName("RWGredwood");
 		spawnableCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityWolf.class, 8, 1, 2));
         spawnableCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityHorse.class, 3, 2, 3));
 	}
