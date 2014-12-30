@@ -1,5 +1,6 @@
 package rwg;
 
+import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.Mod;
@@ -12,10 +13,10 @@ import rwg.biomes.base.BaseBiomes;
 import rwg.config.ConfigRWG;
 import rwg.data.TreeReplacement;
 import rwg.data.VillageMaterials;
-import rwg.support.BiomeSupport;
+import rwg.support.Support;
 import rwg.world.WorldTypeRealistic;
 
-@Mod(modid="RWG", name="RealisticWorldGen", version="Alpha 1.1")
+@Mod(modid="RWG", name="RealisticWorldGen", version="Alpha 1.2")
 public class RWG
 {	
 	@Instance("RWG")
@@ -44,6 +45,6 @@ public class RWG
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) 
 	{
-		BiomeSupport.init();
+		Support.init();
 	}
 }

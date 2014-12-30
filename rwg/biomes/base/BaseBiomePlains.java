@@ -9,11 +9,11 @@ import net.minecraft.world.biome.BiomeGenBase;
 
 public class BaseBiomePlains extends BiomeGenBase
 {
-	public BaseBiomePlains(int id) 
+	public BaseBiomePlains(int id, String bn) 
 	{
 		super(id);
 		setTemperatureRainfall(0.6f, 0.4f);
-		setBiomeName("RWGplains");
+		setBiomeName(bn);
         spawnableCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityHorse.class, 3, 2, 3));
 	}
 }

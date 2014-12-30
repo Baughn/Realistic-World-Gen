@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import cpw.mods.fml.common.eventhandler.Event.Result;
 import rwg.biomes.realistic.RealisticBiomeBase;
 import rwg.map.MapGenAncientVillage;
 import rwg.util.CanyonColor;
@@ -40,6 +41,8 @@ import net.minecraft.world.gen.structure.MapGenMineshaft;
 import net.minecraft.world.gen.structure.MapGenStronghold;
 import net.minecraft.world.gen.structure.MapGenVillage;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.terraingen.ChunkProviderEvent;
+import net.minecraftforge.event.terraingen.DecorateBiomeEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 
 public class ChunkGeneratorRealistic implements IChunkProvider
@@ -57,6 +60,7 @@ public class ChunkGeneratorRealistic implements IChunkProvider
     private CellNoise cell;
     
 	private RealisticBiomeBase[] biomesForGeneration;
+	private BiomeGenBase[] baseBiomesList;
     
     private final int sampleSize = 8;
     private final int sampleArraySize;
@@ -104,6 +108,7 @@ public class ChunkGeneratorRealistic implements IChunkProvider
             }
         }
         
+        baseBiomesList = new BiomeGenBase[256];
         biomeData = new int[sampleArraySize * sampleArraySize];
     	hugeRender = new float[81][256];
     	smallRender = new float[625][256];
@@ -117,9 +122,14 @@ public class ChunkGeneratorRealistic implements IChunkProvider
         byte[] metadata = new byte[65536];
         float[] noise = new float[256];
         biomesForGeneration = new RealisticBiomeBase[256];
+        int k;
         
         generateTerrain(cmr, cx, cy, blocks, metadata, biomesForGeneration, noise);
-        replaceBlocksForBiome(cx, cy, blocks, metadata, biomesForGeneration, noise);
+        for(k = 0; k < 256; k++)
+        {
+        	baseBiomesList[k] = biomesForGeneration[k].baseBiome;
+        }
+        replaceBlocksForBiome(cx, cy, blocks, metadata, biomesForGeneration, baseBiomesList, noise);
         caves.func_151539_a(this, worldObj, cx, cy, blocks);
 
         mineshaftGenerator.func_151539_a(this, this.worldObj, cx, cy, blocks);
@@ -128,9 +138,9 @@ public class ChunkGeneratorRealistic implements IChunkProvider
         
         Chunk chunk = new Chunk(this.worldObj, blocks, metadata, cx, cy);
         byte[] abyte1 = chunk.getBiomeArray();
-        for (int k = 0; k < abyte1.length; ++k)
+        for (k = 0; k < abyte1.length; ++k)
         {
-            abyte1[k] = (byte)this.biomesForGeneration[parabolicSize * 16 + parabolicSize].baseBiome.biomeID;
+            abyte1[k] = (byte)this.baseBiomesList[k].biomeID;
         }
         chunk.generateSkylightMap();
         return chunk;
@@ -140,7 +150,6 @@ public class ChunkGeneratorRealistic implements IChunkProvider
     {	
     	int p, h;
     	float[] noise = getNewNoise(cmr, cx * 16, cy * 16, biomes);
-    	float noise3;
     	for(int i = 0; i < 16; i++)
     	{
     		for(int j = 0; j < 16; j++)
@@ -161,23 +170,6 @@ public class ChunkGeneratorRealistic implements IChunkProvider
         					blocks[p] = Blocks.air;
         				}
     				}
-    				/*else if(k <= noise[0] + noise[1] * 6 && k >= noise[0] - noise[1] * 6)
-    				{
-        				noise3 = perlin.noise3((cx * 16 + j) / 20f, (cy * 16 + i) / 20f, k / 20f) + (noise[0] - k) / (noise[1] * 2);
-        				if(noise3 > 0f)
-        				{
-        					blocks[p] = Blocks.stone;
-        				}
-        				else if(k < 63)
-        				{
-        					blocks[p] = Blocks.water;
-        				}
-        				else
-        				{
-        					blocks[p] = Blocks.air;
-        				}
-    				}
-    				else if(k < noise[0] - noise[1])*/
     				else 
     				{
     					blocks[p] = Blocks.stone;
@@ -336,7 +328,7 @@ public class ChunkGeneratorRealistic implements IChunkProvider
     			if(randBiome)
     			{
     				bCount = 0f;
-    				bRand = 0.5f + perlin.noise2((float)(x + i) / 5f, (float)(y + j) / 5f); //1f + rand.nextFloat();
+    				bRand = 0.5f + perlin.noise2((float)(x + i) / 15f, (float)(y + j) / 15f); //1f + rand.nextFloat();
     				bRand = bRand < 0f ? 0f : bRand > 0.99999f ? 0.99999f : bRand;
     			}
     			
@@ -386,18 +378,27 @@ public class ChunkGeneratorRealistic implements IChunkProvider
     	return result;
     }
 
-    public void replaceBlocksForBiome(int cx, int cy, Block[] blocks, byte[] metadata, RealisticBiomeBase biomes[], float[] n)
+    public void replaceBlocksForBiome(int cx, int cy, Block[] blocks, byte[] metadata, RealisticBiomeBase[] biomes, BiomeGenBase[] base, float[] n)
     {
-    	for(int i = 0; i < 16; i++)
+        ChunkProviderEvent.ReplaceBiomeBlocks event = new ChunkProviderEvent.ReplaceBiomeBlocks(this, cx, cy, blocks, metadata, base, worldObj);
+        MinecraftForge.EVENT_BUS.post(event);
+        if (event.getResult() == Result.DENY) return;
+    	
+    	int i, j, depth;
+    	for(i = 0; i < 16; i++)
     	{
-    		for(int j = 0; j < 16; j++)
+    		for(j = 0; j < 16; j++)
     		{
     			RealisticBiomeBase biome = biomes[i * 16 + j];
-    			int depth = -1;
+    			depth = -1;
                 
     			biome.rReplace(blocks, metadata, cx * 16 + j, cy * 16 + i, i, j, depth, worldObj, rand, perlin, cell, n);
     			
     			blocks[(j * 16 + i) * 256] = Blocks.bedrock;
+    			blocks[(j * 16 + i) * 256 + rand.nextInt(2)] = Blocks.bedrock;
+    			blocks[(j * 16 + i) * 256 + rand.nextInt(3)] = Blocks.bedrock;
+    			blocks[(j * 16 + i) * 256 + rand.nextInt(4)] = Blocks.bedrock;
+    			blocks[(j * 16 + i) * 256 + rand.nextInt(5)] = Blocks.bedrock;
     		}
     	}
     }
@@ -563,6 +564,8 @@ public class ChunkGeneratorRealistic implements IChunkProvider
         	}
         }
         
+        MinecraftForge.EVENT_BUS.post(new DecorateBiomeEvent.Pre(worldObj, rand, i, j));
+        
         RealisticBiomeBase b;
         float snow = 0f;
         for(int bn = 0; bn < 256; bn++)
@@ -586,6 +589,8 @@ public class ChunkGeneratorRealistic implements IChunkProvider
                 }
         	}
         }
+        
+        MinecraftForge.EVENT_BUS.post(new DecorateBiomeEvent.Post(worldObj, rand, i, j));
         
 		for(int l18 = 0; l18 < 50; l18++)
 		{

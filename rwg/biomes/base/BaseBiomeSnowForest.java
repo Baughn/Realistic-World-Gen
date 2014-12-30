@@ -8,11 +8,11 @@ import net.minecraft.world.biome.BiomeGenBase;
 
 public class BaseBiomeSnowForest extends BiomeGenBase
 {
-	public BaseBiomeSnowForest(int id) 
+	public BaseBiomeSnowForest(int id, String bn) 
 	{
 		super(id);
 		setTemperatureRainfall(0.0f, 0.1f);
-		setBiomeName("RWGsnowForest");
+		setBiomeName(bn);
 		spawnableCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityWolf.class, 8, 4, 4));
 	}
 }

@@ -12,11 +12,12 @@ import net.minecraft.world.biome.BiomeGenBase;
 
 public class BaseBiomeHotPlains extends BiomeGenBase
 {
-	public BaseBiomeHotPlains(int id) 
+	public BaseBiomeHotPlains(int id, String bn) 
 	{
 		super(id);
 		setTemperatureRainfall(0.9f, 0.1f);
-		setBiomeName("RWGhotPlains");
+		setBiomeName(bn);
+		setDisableRain();
         spawnableCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityHorse.class, 5, 2, 3));
         
 		VillageMaterialData vmd = new VillageMaterialData(this);

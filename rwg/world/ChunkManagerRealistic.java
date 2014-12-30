@@ -5,17 +5,35 @@ import java.util.List;
 import java.util.Random;
 
 import rwg.biomes.realistic.RealisticBiomeBase;
-import rwg.biomes.realistic.RealisticBiomePolar;
-import rwg.biomes.realistic.RealisticBiomeSnowHills;
-import rwg.biomes.realistic.RealisticBiomeSnowLakes;
-import rwg.biomes.realistic.RealisticBiomeSnowPlains;
-import rwg.biomes.realistic.RealisticBiomeTaigaHills;
-import rwg.biomes.realistic.RealisticBiomeTaigaLakes;
-import rwg.biomes.realistic.RealisticBiomeTaigaPlains;
-import rwg.biomes.realistic.RealisticBiomeTundraHills;
-import rwg.biomes.realistic.RealisticBiomeTundraLakes;
-import rwg.biomes.realistic.RealisticBiomeTundraPlains;
-import rwg.support.BiomeSupport;
+import rwg.biomes.realistic.land.RealisticBiomeCanyon;
+import rwg.biomes.realistic.land.RealisticBiomeDesertMountains;
+import rwg.biomes.realistic.land.RealisticBiomeDunes;
+import rwg.biomes.realistic.land.RealisticBiomeMesa;
+import rwg.biomes.realistic.land.RealisticBiomePolar;
+import rwg.biomes.realistic.land.RealisticBiomeRedwood;
+import rwg.biomes.realistic.land.RealisticBiomeRedwoodSnow;
+import rwg.biomes.realistic.land.RealisticBiomeSavanna;
+import rwg.biomes.realistic.land.RealisticBiomeSavannaDunes;
+import rwg.biomes.realistic.land.RealisticBiomeSavannaForest;
+import rwg.biomes.realistic.land.RealisticBiomeSnowHills;
+import rwg.biomes.realistic.land.RealisticBiomeSnowLakes;
+import rwg.biomes.realistic.land.RealisticBiomeSnowRivers;
+import rwg.biomes.realistic.land.RealisticBiomeStoneMountains;
+import rwg.biomes.realistic.land.RealisticBiomeTaigaHills;
+import rwg.biomes.realistic.land.RealisticBiomeTaigaPlains;
+import rwg.biomes.realistic.land.RealisticBiomeTundraHills;
+import rwg.biomes.realistic.land.RealisticBiomeTundraPlains;
+import rwg.biomes.realistic.old.OldRealisticBiomePolar;
+import rwg.biomes.realistic.old.OldRealisticBiomeSnowHills;
+import rwg.biomes.realistic.old.OldRealisticBiomeSnowLakes;
+import rwg.biomes.realistic.old.OldRealisticBiomeSnowPlains;
+import rwg.biomes.realistic.old.OldRealisticBiomeTaigaHills;
+import rwg.biomes.realistic.old.OldRealisticBiomeTaigaLakes;
+import rwg.biomes.realistic.old.OldRealisticBiomeTaigaPlains;
+import rwg.biomes.realistic.old.OldRealisticBiomeTundraHills;
+import rwg.biomes.realistic.old.OldRealisticBiomeTundraLakes;
+import rwg.biomes.realistic.old.OldRealisticBiomeTundraPlains;
+import rwg.support.Support;
 import rwg.util.CellNoise;
 import rwg.util.PerlinNoise;
 import net.minecraft.world.ChunkPosition;
@@ -35,12 +53,16 @@ public class ChunkManagerRealistic extends WorldChunkManager
     
     private CellNoise biomecell;
     
-    private int biomeLength;
+    private ArrayList<RealisticBiomeBase> biomes_snow;
+    private ArrayList<RealisticBiomeBase> biomes_cold;
+    private ArrayList<RealisticBiomeBase> biomes_hot;
+    private ArrayList<RealisticBiomeBase> biomes_wet;
+    private int biomes_snowLength;
+    private int biomes_coldLength;
+    private int biomes_hotLength;
+    private int biomes_wetLength;
     
-    private RealisticBiomeBase[] biomes_polar;
-    private RealisticBiomeBase[] biomes_snow;
-    private RealisticBiomeBase[] biomes_taiga;
-    private RealisticBiomeBase[] biomes_tundra;
+    private boolean wetEnabled;
 	
 	protected ChunkManagerRealistic()
 	{
@@ -58,41 +80,47 @@ public class ChunkManagerRealistic extends WorldChunkManager
     	cell.setUseDistance(true);
     	biomecell = new CellNoise(seed, (short)0);
 		
-		biomes_polar = new RealisticBiomeBase[]{
-			RealisticBiomeBase.landPolarPlains,
-			RealisticBiomeBase.landPolarLakes
-		};
-		
-		biomes_snow = new RealisticBiomeBase[]{
-			RealisticBiomeBase.landSnowHillsHigh,
-			RealisticBiomeBase.landSnowHillsRivers,
-			RealisticBiomeBase.landSnowHillsSpikes,
-			RealisticBiomeBase.landSnowPlainsField,
-			RealisticBiomeBase.landSnowLakesIslands
-		};
-		
-		biomes_taiga = new RealisticBiomeBase[]{
-			RealisticBiomeBase.landTaigaHillsShield,
-			RealisticBiomeBase.landTaigaHillsRivers,
-			RealisticBiomeBase.landTaigaHillsSpikes,
-			RealisticBiomeBase.landTaigaHillsMix,
-			RealisticBiomeBase.landTaigaPlainsShield,
-			RealisticBiomeBase.landTaigaPlainsMix,
-			RealisticBiomeBase.landTaigaLakesIslands,
-			RealisticBiomeBase.landTaigaLakesSwamp,
-			RealisticBiomeBase.landTaigaLakesMix
-		};
-		
-		biomes_tundra = new RealisticBiomeBase[]{
-			RealisticBiomeBase.landTundraHillsHigh,
-			RealisticBiomeBase.landTundraHillsValley,
-			RealisticBiomeBase.landTundraHillsSpikes,
-			RealisticBiomeBase.landTundraPlainsPolar,
-			RealisticBiomeBase.landTundraPlainsShield,
-			RealisticBiomeBase.landTundraPlainsMix,
-			RealisticBiomeBase.landTundraLakesIslands,
-			RealisticBiomeBase.landTundraLakesShield
-		};
+    	biomes_snow = new ArrayList<RealisticBiomeBase>();
+    	biomes_cold = new ArrayList<RealisticBiomeBase>();
+    	biomes_hot = new ArrayList<RealisticBiomeBase>();
+    	biomes_wet = new ArrayList<RealisticBiomeBase>();
+    	
+    	biomes_snow.add(RealisticBiomeBase.polar);
+    	biomes_snow.add(RealisticBiomeBase.tundraHills);
+    	biomes_snow.add(RealisticBiomeBase.tundraPlains);
+    	biomes_snow.add(RealisticBiomeBase.snowHills);
+    	biomes_snow.add(RealisticBiomeBase.snowRivers);
+    	biomes_snow.add(RealisticBiomeBase.snowLakes);
+    	biomes_snow.add(RealisticBiomeBase.redwoodSnow);
+    	
+    	biomes_cold.add(RealisticBiomeBase.taigaHills);
+    	biomes_cold.add(RealisticBiomeBase.taigaPlains);
+    	biomes_cold.add(RealisticBiomeBase.redwood);
+
+    	biomes_hot.add(RealisticBiomeBase.desertMountains);
+    	biomes_hot.add(RealisticBiomeBase.dunes);
+    	biomes_hot.add(RealisticBiomeBase.stoneMountains);
+    	biomes_hot.add(RealisticBiomeBase.savanna);
+    	biomes_hot.add(RealisticBiomeBase.savannaForest);
+    	biomes_hot.add(RealisticBiomeBase.savannaDunes);
+    	biomes_hot.add(RealisticBiomeBase.canyon);
+    	biomes_hot.add(RealisticBiomeBase.mesa);
+    	
+    	biomes_snow.addAll(Support.biomes_snow);
+    	biomes_cold.addAll(Support.biomes_cold);
+    	biomes_hot.addAll(Support.biomes_hot);
+    	biomes_wet.addAll(Support.biomes_wet);
+    	
+    	biomes_snowLength = biomes_snow.size();
+    	biomes_coldLength = biomes_cold.size();
+    	biomes_hotLength = biomes_hot.size();
+    	biomes_wetLength = biomes_wet.size();
+    	
+    	wetEnabled = false;
+    	if(biomes_wetLength > 0)
+    	{
+    		wetEnabled = true;
+    	}
     }    
 	
     public int[] getBiomesGens(int par1, int par2, int par3, int par4)
@@ -140,13 +168,51 @@ public class ChunkManagerRealistic extends WorldChunkManager
     
     public RealisticBiomeBase getBiomeDataAt(int par1, int par2, float ocean)
     {
-    	float h = (biomecell.noise(par1 / 450D, par2 / 450D, 1D) * 0.5f) + 0.5f;
-    	h = h < 0f ? 0f : h >= 0.9999999f ? 0.9999999f : h;
+    	//return RealisticBiomeBase.savannaDunes;
     	
-    	//h *= BiomeSupport.biomesLength;
-    	return BiomeSupport.biomes.get(0);//(int)(h));
-    	
-    	//return RealisticBiomeBase.landRedwoodSpikes;
+    	float b = (biomecell.noise(par1 / 1500D, par2 / 1500D, 1D) * 0.5f) + 0.5f;
+    	b = b < 0f ? 0f : b >= 0.9999999f ? 0.9999999f : b;
+
+    	if((wetEnabled && b < 0.25f) || b < 0.33f)
+    	{
+        	float h = (biomecell.noise(par1 / 450D, par2 / 450D, 1D) * 0.5f) + 0.5f;
+        	h = h < 0f ? 0f : h >= 0.9999999f ? 0.9999999f : h;
+        	
+        	h *= biomes_snowLength;
+        	return biomes_snow.get((int)(h));
+    	}
+    	else if((wetEnabled && b < 0.50f) || b < 0.66f)
+    	{
+        	float h = (biomecell.noise(par1 / 450D, par2 / 450D, 1D) * 0.5f) + 0.5f;
+        	h = h < 0f ? 0f : h >= 0.9999999f ? 0.9999999f : h;
+        	
+        	h *= biomes_coldLength;
+        	return biomes_cold.get((int)(h));
+    	}
+    	else if((wetEnabled && b < 0.75f) || b < 1f)
+    	{
+        	float h = (biomecell.noise(par1 / 450D, par2 / 450D, 1D) * 0.5f) + 0.5f;
+        	h = h < 0f ? 0f : h >= 0.9999999f ? 0.9999999f : h;
+        	
+        	h *= biomes_hotLength;
+        	return biomes_hot.get((int)(h));
+    	}
+    	else if(wetEnabled)
+    	{
+        	float h = (biomecell.noise(par1 / 450D, par2 / 450D, 1D) * 0.5f) + 0.5f;
+        	h = h < 0f ? 0f : h >= 0.9999999f ? 0.9999999f : h;
+        	
+        	h *= biomes_wetLength;
+        	return biomes_wet.get((int)(h));
+    	}
+    	else
+    	{
+        	float h = (biomecell.noise(par1 / 450D, par2 / 450D, 1D) * 0.5f) + 0.5f;
+        	h = h < 0f ? 0f : h >= 0.9999999f ? 0.9999999f : h;
+        	
+        	h *= biomes_hotLength;
+        	return biomes_hot.get((int)(h));
+    	}
     	
     	/*if(par1 + par2 < 0)
     	{

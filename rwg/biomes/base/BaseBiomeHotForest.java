@@ -8,11 +8,12 @@ import net.minecraft.world.biome.BiomeGenBase;
 
 public class BaseBiomeHotForest extends BiomeGenBase
 {
-	public BaseBiomeHotForest(int id) 
+	public BaseBiomeHotForest(int id, String bn) 
 	{
 		super(id);
 		setTemperatureRainfall(0.8f, 0.2f);
-		setBiomeName("RWGhotForest");
+		setBiomeName(bn);
+		setDisableRain();
 	}
 	
     @SideOnly(Side.CLIENT)
