@@ -11,7 +11,7 @@
         - Added new events for compatibility
         - Fixed biome transitions in canyon and mesa biomes
                
-        Version Alpha 1.1 '15-10-2014':
+        Version Alpha 1.1 '15-10-2014'
         - Added new biome placement system
         - Improved biome dictionary
         - Added redwood test biome
