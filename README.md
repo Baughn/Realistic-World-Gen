@@ -1,4 +1,10 @@
 ## CHANGELOG ##
+     
+        Version Alpha 1.2.02 '31-12-2014'
+        - Fixed decorate event bugs
+        
+        Version Alpha 1.2.01 '30-12-2014'
+        - Added populate and decorate events
         
         Version Alpha 1.2 '30-12-2014'
         - Added biomes 'o plenty support
