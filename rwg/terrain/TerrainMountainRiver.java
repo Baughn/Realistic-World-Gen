@@ -16,7 +16,7 @@ public class TerrainMountainRiver extends TerrainBase
 		h *= h / 32f;
 		h = h > 150f ? 150f : h;
 
-		float bn = 0f;
+		/*float bn = 0f;
 		if(h < 1f)
 		{
 			bn = 1f - h;
@@ -26,11 +26,11 @@ public class TerrainMountainRiver extends TerrainBase
 			}
 			
 			bn = bn > 3f ? 3f : bn;
-		}
+		}*/
 
-		if(h < 3f)
+		if(h < 10f)
 		{
-			h += perlin.noise2(x / 13f, y / 13f) * (bn + 3f - h) * 0.8f;
+			h += perlin.noise2(x / 14f, y / 14f) * (10f - h) * 0.2f;
 		}
 		
 		if(h > 10f)
@@ -54,6 +54,6 @@ public class TerrainMountainRiver extends TerrainBase
     		h += perlin.noise2(x / 8f, y / 8f) * (d / 2f);
 		}
 		
-		return h + 63f - bn;
+		return h + 67f;// - bn;
 	}
 }

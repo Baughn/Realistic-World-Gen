@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import rwg.support.RealisticBiomeSupport;
 import rwg.support.Support;
+import rwg.support.edit.*;
 import rwg.surface.*;
 import rwg.terrain.*;
 import biomesoplenty.api.content.BOPCBiomes;
@@ -78,7 +79,13 @@ public class SupportBOP
 			new RealisticBiomeSupport(
 				BOPCBiomes.brushland,
 				new TerrainDuneValley(300f),
-				new SurfaceDuneValley(BOPCBiomes.brushland.topBlock, BOPCBiomes.brushland.fillerBlock, 300f, false, true) 
+				new SurfaceBase[]{
+					new SurfaceDuneValley(BOPCBiomes.brushland.topBlock, BOPCBiomes.brushland.fillerBlock, 300f, false, true),
+					new SurfaceRiverOasis(),
+				},
+				new EditBase[]{
+					new EditRiverOasis()
+				}
 			)
 		);
 		
@@ -229,7 +236,13 @@ public class SupportBOP
 			new RealisticBiomeSupport(
 				BOPCBiomes.heathland,
 				new TerrainDuneValley(300f),
-				new SurfaceDuneValley(BOPCBiomes.brushland.topBlock, BOPCBiomes.brushland.fillerBlock, 300f, false, true) 
+				new SurfaceBase[]{
+					new SurfaceDuneValley(BOPCBiomes.brushland.topBlock, BOPCBiomes.brushland.fillerBlock, 300f, false, true) ,
+					new SurfaceRiverOasis(),
+				},
+				new EditBase[]{
+					new EditRiverOasis()
+				}
 			)
 		);
 		
@@ -246,8 +259,8 @@ public class SupportBOP
 		Support.biomes_hot.add(
 			new RealisticBiomeSupport(
 				BOPCBiomes.jadeCliffs,
-				new TerrainMountainRiver(),
-				new SurfaceMountainStone(BOPCBiomes.jadeCliffs.topBlock, BOPCBiomes.jadeCliffs.fillerBlock, true, Blocks.sand, 0.95f)
+				new TerrainHilly(230f, 120f, 0f),
+				new SurfaceMountainStone(BOPCBiomes.jadeCliffs.topBlock, BOPCBiomes.jadeCliffs.fillerBlock, false, null, 0.95f)
 			)
 		);
 		
@@ -355,7 +368,13 @@ public class SupportBOP
 			new RealisticBiomeSupport(
 				BOPCBiomes.outback,
 				new TerrainDuneValley(300f),
-				new SurfaceDuneValley(BOPCBiomes.outback.topBlock, BOPCBiomes.outback.fillerBlock, 300f, false, false) 
+				new SurfaceBase[]{
+					new SurfaceDuneValley(BOPCBiomes.outback.topBlock, BOPCBiomes.outback.fillerBlock, 300f, false, false),
+					new SurfaceRiverOasis(),
+				},
+				new EditBase[]{
+					new EditRiverOasis()
+				}
 			)
 		);
 		

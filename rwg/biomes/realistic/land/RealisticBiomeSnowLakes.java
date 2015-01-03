@@ -89,32 +89,29 @@ public class RealisticBiomeSnowLakes extends RealisticBiomeBase
 			(new DecoGrass(Blocks.tallgrass, 1)).generate(world, rand, l19, k22, j24);
 		}
 		
-		//trees
-		float l = perlin.noise2(chunkX / 100f, chunkY / 100f) * 6f;
-		for (int b1 = 0; b1 < l * 2f * strength; b1++)
+		if(rand.nextInt((int)(4f / strength)) == 0)
 		{
 			int j6 = chunkX + rand.nextInt(16) + 8;
 			int k10 = chunkY + rand.nextInt(16) + 8;
 			int z52 = world.getHeightValue(j6, k10);
 
-			WorldGenerator worldgenerator = rand.nextInt(4) == 0 ? new DecoSmallSpruce(1 + rand.nextInt(2)) : rand.nextInt(6) == 0 ? new DecoSmallPine(1 + rand.nextInt(3), 4 + rand.nextInt(4)) : new DecoSmallPine(4 + rand.nextInt(6), 5 + rand.nextInt(10));
-			worldgenerator.setScale(1.0D, 1.0D, 1.0D);
-			worldgenerator.generate(world, rand, j6, z52, k10);
+			if(z52 < 120)
+			{
+				WorldGenerator worldgenerator = rand.nextInt(3) != 0 ? new DecoSmallPine(1 + rand.nextInt(3), 3 + rand.nextInt(5), 0) : new DecoSmallSpruce(rand.nextInt(2));
+				worldgenerator.setScale(1.0D, 1.0D, 1.0D);
+				worldgenerator.generate(world, rand, j6, z52, k10);
+			}
 		}
 		
-    	for(int b = 0; b < 2f * strength; b++)
+		if(rand.nextInt((int)(2f / strength)) == 0)
     	{
 			int i1 = chunkX + rand.nextInt(16) + 8;
 			int j1 = chunkY + rand.nextInt(16) + 8;
 		    int k1 = world.getHeightValue(i1, j1);
-		    if(rand.nextInt(10) == 0)
-		    {
-    		    (new DecoShrub(rand.nextInt(5) + 4, rand.nextInt(2), rand.nextInt(2))).generate(world, rand, i1, k1, j1);
-		    }
-		    else
-		    {
-		    	(new DecoShrub(rand.nextInt(4) + 1, rand.nextInt(2), rand.nextInt(2))).generate(world, rand, i1, k1, j1);
-		    }
+			if(k1 < 110)
+			{
+				(new DecoShrub(rand.nextInt(4) + 1, rand.nextInt(2), rand.nextInt(2))).generate(world, rand, i1, k1, j1);
+			}
     	}
     }
     

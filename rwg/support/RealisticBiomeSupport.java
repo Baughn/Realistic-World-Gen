@@ -8,6 +8,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import rwg.biomes.base.BaseBiomes;
 import rwg.biomes.realistic.RealisticBiomeBase;
+import rwg.support.edit.EditBase;
 import rwg.surface.SurfaceBase;
 import rwg.terrain.TerrainBase;
 import rwg.util.CellNoise;
@@ -18,14 +19,41 @@ public class RealisticBiomeSupport extends RealisticBiomeBase
 {
 	public BiomeGenBase customBiome;
 	public TerrainBase terrain;
-	public SurfaceBase surface;
 	
-	public RealisticBiomeSupport(BiomeGenBase b, TerrainBase t, SurfaceBase s)
+	public SurfaceBase[] surfaces;
+	public int surfacesLength;
+	
+	public EditBase[] edits;
+	public int editLength;
+	
+	public RealisticBiomeSupport(BiomeGenBase b, TerrainBase t, SurfaceBase[] s, EditBase[] e)
 	{
 		super(0, b);
 		customBiome = b;
 		terrain = t;
-		surface = s;
+		
+		surfaces = s;
+		surfacesLength = s.length;
+		
+		if(e != null)
+		{
+			edits = e;
+			editLength = e.length;
+		}
+		else
+		{
+			editLength = 0;
+		}
+	}
+	
+	public RealisticBiomeSupport(BiomeGenBase b, TerrainBase t, SurfaceBase s, EditBase e)
+	{
+		this(b, t, new SurfaceBase[]{s}, e != null ? new EditBase[]{e} : null);
+	}
+	
+	public RealisticBiomeSupport(BiomeGenBase b, TerrainBase t, SurfaceBase s)
+	{
+		this(b, t, s, null);
 	}
 
     @Override
@@ -34,6 +62,11 @@ public class RealisticBiomeSupport extends RealisticBiomeBase
     	if(strength > 0.3f)
     	{
         	customBiome.decorate(world, rand, chunkX, chunkY);
+    	}
+
+    	for(int e = 0; e < editLength; e++)
+    	{
+    		edits[e].decorate(world, rand, chunkX, chunkY, perlin, cell, strength, river);
     	}
     }
 
@@ -46,6 +79,9 @@ public class RealisticBiomeSupport extends RealisticBiomeBase
     @Override
     public void rReplace(Block[] blocks, byte[] metadata, int i, int j, int x, int y, int depth, World world, Random rand, PerlinNoise perlin, CellNoise cell, float[] noise, float river, BiomeGenBase[] base)
     {
-    	surface.paintTerrain(blocks, metadata, i, j, x, y, depth, world, rand, perlin, cell, noise, river, base);
+    	for(int s = 0; s < surfacesLength; s++)
+    	{
+    		surfaces[s].paintTerrain(blocks, metadata, i, j, x, y, depth, world, rand, perlin, cell, noise, river, base);
+    	}
     }
 }

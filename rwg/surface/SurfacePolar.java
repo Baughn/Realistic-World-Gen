@@ -2,6 +2,7 @@ package rwg.surface;
 
 import java.util.Random;
 
+import rwg.api.RWGBiomes;
 import rwg.util.CellNoise;
 import rwg.util.PerlinNoise;
 import rwg.util.SnowheightCalculator;
@@ -21,6 +22,18 @@ public class SurfacePolar extends SurfaceBase
 	public void paintTerrain(Block[] blocks, byte[] metadata, int i, int j, int x, int y, int depth, World world, Random rand, PerlinNoise perlin, CellNoise cell, float[] noise, float river, BiomeGenBase[] base)
 	{
 		boolean water = false;
+		boolean riverPaint = false;
+		boolean grass = false;
+		
+		if(river > 0.05f && river + (perlin.noise2(i / 10f, j / 10f) * 0.1f) > 0.86f)
+		{
+			riverPaint = true;
+			
+			if(perlin.noise2(i / 12f, j / 12f) > 0.25f)
+			{
+				grass = true;
+			}
+		}
 		
 		Block b;
 		for(int k = 255; k > -1; k--)
@@ -33,7 +46,19 @@ public class SurfacePolar extends SurfaceBase
             else if(b == Blocks.stone)
             {
             	depth++;
-        		if(depth > -1 && depth < 9)
+
+            	if(riverPaint)
+            	{
+            		if(grass && depth < 4)
+            		{
+    	        		blocks[(y * 16 + x) * 256 + k] = Blocks.dirt;
+            		}
+            		else if(depth == 0)
+            		{
+    	        		blocks[(y * 16 + x) * 256 + k] = rand.nextInt(2) == 0 ? Blocks.stone : Blocks.cobblestone;
+            		}
+            	}
+        		else if(depth > -1 && depth < 9)
         		{
         			blocks[(y * 16 + x) * 256 + k] = Blocks.snow;
             		if(depth == 0 && k > 61 && k < 254)

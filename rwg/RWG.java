@@ -16,7 +16,7 @@ import rwg.data.VillageMaterials;
 import rwg.support.Support;
 import rwg.world.WorldTypeRealistic;
 
-@Mod(modid="RWG", name="RealisticWorldGen", version="Alpha 1.2.02")
+@Mod(modid="RWG", name="RealisticWorldGen", version="Alpha 1.3")
 public class RWG
 {	
 	@Instance("RWG")

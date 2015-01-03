@@ -30,10 +30,12 @@ public class ChunkManagerRealistic extends WorldChunkManager
     private ArrayList<RealisticBiomeBase> biomes_cold;
     private ArrayList<RealisticBiomeBase> biomes_hot;
     private ArrayList<RealisticBiomeBase> biomes_wet;
+    private ArrayList<RealisticBiomeBase> biomes_test;
     private int biomes_snowLength;
     private int biomes_coldLength;
     private int biomes_hotLength;
     private int biomes_wetLength;
+    private int biomes_testLength;
     
     private boolean wetEnabled;
 	
@@ -57,6 +59,7 @@ public class ChunkManagerRealistic extends WorldChunkManager
     	biomes_cold = new ArrayList<RealisticBiomeBase>();
     	biomes_hot = new ArrayList<RealisticBiomeBase>();
     	biomes_wet = new ArrayList<RealisticBiomeBase>();
+    	biomes_test = new ArrayList<RealisticBiomeBase>();
     	
     	biomes_snow.add(RealisticBiomeBase.polar);
     	biomes_snow.add(RealisticBiomeBase.tundraHills);
@@ -83,11 +86,13 @@ public class ChunkManagerRealistic extends WorldChunkManager
     	biomes_cold.addAll(Support.biomes_cold);
     	biomes_hot.addAll(Support.biomes_hot);
     	biomes_wet.addAll(Support.biomes_wet);
+    	biomes_test.addAll(Support.biomes_test);
     	
     	biomes_snowLength = biomes_snow.size();
     	biomes_coldLength = biomes_cold.size();
     	biomes_hotLength = biomes_hot.size();
     	biomes_wetLength = biomes_wet.size();
+    	biomes_testLength = biomes_test.size();
     	
     	wetEnabled = false;
     	if(biomes_wetLength > 0)
@@ -141,22 +146,14 @@ public class ChunkManagerRealistic extends WorldChunkManager
     
     public RealisticBiomeBase getBiomeDataAt(int par1, int par2, float ocean)
     {
-    	if(par1 < 0f)
-    	{
-        	return RealisticBiomeBase.savannaDunes;
-    	}
-    	else
-    	{
-        	return RealisticBiomeBase.canyon;
-    	}
+        //return RealisticBiomeBase.tundraPlains;
 
-    	/*
-    	float b = (biomecell.noise(par1 / 1500D, par2 / 1500D, 1D) * 0.5f) + 0.5f;
+    	float b = (biomecell.noise((par1 + 1000f) / 1600D, par2 / 1600D, 1D) * 0.5f) + 0.5f;
     	b = b < 0f ? 0f : b >= 0.9999999f ? 0.9999999f : b;
 
     	if((wetEnabled && b < 0.25f) || b < 0.33f)
     	{
-        	float h = (biomecell.noise(par1 / 450D, par2 / 450D, 1D) * 0.5f) + 0.5f;
+        	float h = (biomecell.noise(par1 / 550D, par2 / 550D, 1D) * 0.5f) + 0.5f;
         	h = h < 0f ? 0f : h >= 0.9999999f ? 0.9999999f : h;
         	
         	h *= biomes_snowLength;
@@ -164,7 +161,7 @@ public class ChunkManagerRealistic extends WorldChunkManager
     	}
     	else if((wetEnabled && b < 0.50f) || b < 0.66f)
     	{
-        	float h = (biomecell.noise(par1 / 450D, par2 / 450D, 1D) * 0.5f) + 0.5f;
+        	float h = (biomecell.noise(par1 / 550D, par2 / 550D, 1D) * 0.5f) + 0.5f;
         	h = h < 0f ? 0f : h >= 0.9999999f ? 0.9999999f : h;
         	
         	h *= biomes_coldLength;
@@ -172,7 +169,7 @@ public class ChunkManagerRealistic extends WorldChunkManager
     	}
     	else if((wetEnabled && b < 0.75f) || b < 1f)
     	{
-        	float h = (biomecell.noise(par1 / 450D, par2 / 450D, 1D) * 0.5f) + 0.5f;
+        	float h = (biomecell.noise(par1 / 550D, par2 / 550D, 1D) * 0.5f) + 0.5f;
         	h = h < 0f ? 0f : h >= 0.9999999f ? 0.9999999f : h;
         	
         	h *= biomes_hotLength;
@@ -180,7 +177,7 @@ public class ChunkManagerRealistic extends WorldChunkManager
     	}
     	else if(wetEnabled)
     	{
-        	float h = (biomecell.noise(par1 / 450D, par2 / 450D, 1D) * 0.5f) + 0.5f;
+        	float h = (biomecell.noise(par1 / 550D, par2 / 550D, 1D) * 0.5f) + 0.5f;
         	h = h < 0f ? 0f : h >= 0.9999999f ? 0.9999999f : h;
         	
         	h *= biomes_wetLength;
@@ -188,13 +185,12 @@ public class ChunkManagerRealistic extends WorldChunkManager
     	}
     	else
     	{
-        	float h = (biomecell.noise(par1 / 450D, par2 / 450D, 1D) * 0.5f) + 0.5f;
+        	float h = (biomecell.noise(par1 / 550D, par2 / 550D, 1D) * 0.5f) + 0.5f;
         	h = h < 0f ? 0f : h >= 0.9999999f ? 0.9999999f : h;
         	
         	h *= biomes_hotLength;
         	return biomes_hot.get((int)(h));
     	}
-    	*/
     	
     	/*if(par1 + par2 < 0)
     	{

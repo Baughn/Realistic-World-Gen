@@ -677,7 +677,7 @@ public class ChunkGeneratorRealistic implements IChunkProvider
 		
         if (TerrainGen.populate(this, worldObj, rand, i, j, flag, PopulateChunkEvent.Populate.EventType.ANIMALS))
         {
-            SpawnerAnimals.performWorldGenSpawning(this.worldObj, biome.baseBiome, x + 8, y + 8, 16, 16, this.rand);
+            SpawnerAnimals.performWorldGenSpawning(this.worldObj, worldObj.getBiomeGenForCoords(x + 16, y + 16), x + 8, y + 8, 16, 16, this.rand);
         }
 
         MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Post(ichunkprovider, worldObj, rand, i, j, flag));

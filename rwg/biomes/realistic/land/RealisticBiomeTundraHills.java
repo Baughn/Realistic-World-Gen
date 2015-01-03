@@ -64,44 +64,64 @@ public class RealisticBiomeTundraHills extends RealisticBiomeBase
 			}
 		}
 		
-		float l = perlin.noise2(chunkX / 100f, chunkY / 100f) * 5f + 2f;
-		for (int b1 = 0; b1 < l * strength; b1++)
+		if(river > 0.75f)
 		{
-			int j6 = chunkX + rand.nextInt(16) + 8;
-			int k10 = chunkY + rand.nextInt(16) + 8;
-			int z52 = world.getHeightValue(j6, k10);
+			for (int b1 = 0; b1 < 6f * strength; b1++)
+			{
+				int j6 = chunkX + rand.nextInt(16) + 8;
+				int k10 = chunkY + rand.nextInt(16) + 8;
+				int z52 = world.getHeightValue(j6, k10);
 
-			if(z52 < 90)
-			{
-				WorldGenerator worldgenerator = rand.nextInt(6) != 0 ? new DecoPineTree(4, rand.nextInt(2)) : rand.nextInt(3) != 0 ? new DecoSmallPine(3 + rand.nextInt(6), 6 + rand.nextInt(8), 0) : new DecoSmallSpruce(1 + rand.nextInt(2));
-				worldgenerator.setScale(1.0D, 1.0D, 1.0D);
-				worldgenerator.generate(world, rand, j6, z52, k10);
-			}
-			else if(z52 < 120)
-			{
 				WorldGenerator worldgenerator = rand.nextInt(3) != 0 ? new DecoSmallPine(1 + rand.nextInt(3), 3 + rand.nextInt(5), 0) : new DecoSmallSpruce(rand.nextInt(2));
 				worldgenerator.setScale(1.0D, 1.0D, 1.0D);
 				worldgenerator.generate(world, rand, j6, z52, k10);
 			}
-		}
-    		
-		for(int f24 = 0; f24 < 3f * strength; f24++)
-    	{
-			int i1 = chunkX + rand.nextInt(16) + 8;
-			int j1 = chunkY + rand.nextInt(16) + 8;
-		    int k1 = world.getHeightValue(i1, j1);
-			if(k1 < 110)
+			
+			for(int f24 = 0; f24 < 4f * strength; f24++)
+	    	{
+				int i1 = chunkX + rand.nextInt(16) + 8;
+				int j1 = chunkY + rand.nextInt(16) + 8;
+			    int k1 = world.getHeightValue(i1, j1);
+				if(k1 < 110)
+				{
+					(new DecoShrub(rand.nextInt(4) + 1, rand.nextInt(2), rand.nextInt(2))).generate(world, rand, i1, k1, j1);
+				}
+	    	}
+			
+			if(rand.nextInt((int)(120f / strength)) == 0)
 			{
-				(new DecoShrub(rand.nextInt(4) + 1, rand.nextInt(2), rand.nextInt(2))).generate(world, rand, i1, k1, j1);
+				int k21 = chunkX + rand.nextInt(16) + 8;
+				int j23 = rand.nextInt(60) + 60;
+				int k24 = chunkY + rand.nextInt(16) + 8;
+				(new DecoWildWheat(rand.nextInt(3))).generate(world, rand, k21, j23, k24);
 			}
-    	}
-		
-		if(rand.nextInt((int)(150f / strength)) == 0)
+		}
+		else
 		{
-			int k21 = chunkX + rand.nextInt(16) + 8;
-			int j23 = rand.nextInt(60) + 60;
-			int k24 = chunkY + rand.nextInt(16) + 8;
-			(new DecoWildWheat(rand.nextInt(3))).generate(world, rand, k21, j23, k24);
+			if(rand.nextInt((int)(4f / strength)) == 0)
+			{
+				int j6 = chunkX + rand.nextInt(16) + 8;
+				int k10 = chunkY + rand.nextInt(16) + 8;
+				int z52 = world.getHeightValue(j6, k10);
+
+				if(z52 < 120)
+				{
+					WorldGenerator worldgenerator = rand.nextInt(3) != 0 ? new DecoSmallPine(1 + rand.nextInt(3), 3 + rand.nextInt(5), 0) : new DecoSmallSpruce(rand.nextInt(2));
+					worldgenerator.setScale(1.0D, 1.0D, 1.0D);
+					worldgenerator.generate(world, rand, j6, z52, k10);
+				}
+			}
+			
+			if(rand.nextInt((int)(2f / strength)) == 0)
+	    	{
+				int i1 = chunkX + rand.nextInt(16) + 8;
+				int j1 = chunkY + rand.nextInt(16) + 8;
+			    int k1 = world.getHeightValue(i1, j1);
+				if(k1 < 110)
+				{
+					(new DecoShrub(rand.nextInt(4) + 1, rand.nextInt(2), rand.nextInt(2))).generate(world, rand, i1, k1, j1);
+				}
+	    	}
 		}
     	
 		if(rand.nextInt((int)(20f / strength)) == 0)
