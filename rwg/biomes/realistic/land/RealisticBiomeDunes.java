@@ -20,6 +20,7 @@ import rwg.deco.DecoGrass;
 import rwg.deco.trees.DecoSavannah;
 import rwg.surface.SurfaceBase;
 import rwg.surface.SurfaceDesert;
+import rwg.surface.SurfaceRiverOasis;
 import rwg.terrain.TerrainBase;
 import rwg.terrain.TerrainDunes;
 import rwg.util.CellNoise;
@@ -29,12 +30,14 @@ public class RealisticBiomeDunes extends RealisticBiomeBase
 {
 	private TerrainBase terrain;
 	private SurfaceBase surface;
+	private SurfaceBase riverSurface;
 
 	public RealisticBiomeDunes() 
 	{
 		super(0, RWGBiomes.baseHotDesert);
 		terrain = new TerrainDunes();
 		surface = new SurfaceDesert(Blocks.sand, Blocks.sand, Blocks.sandstone, Blocks.stone, Blocks.cobblestone);
+		riverSurface = new SurfaceRiverOasis();
 	}
 
     @Override
@@ -146,5 +149,6 @@ public class RealisticBiomeDunes extends RealisticBiomeBase
     public void rReplace(Block[] blocks, byte[] metadata, int i, int j, int x, int y, int depth, World world, Random rand, PerlinNoise perlin, CellNoise cell, float[] noise, float river, BiomeGenBase[] base)
     {
     	surface.paintTerrain(blocks, metadata, i, j, x, y, depth, world, rand, perlin, cell, noise, river, base);
+    	riverSurface.paintTerrain(blocks, metadata, i, j, x, y, depth, world, rand, perlin, cell, noise, river, base);
     }
 }

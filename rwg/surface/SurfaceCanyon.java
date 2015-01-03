@@ -94,11 +94,11 @@ public class SurfaceCanyon extends SurfaceBase
 	        			{
 	        				blocks[(y * 16 + x) * 256 + k] = Blocks.dirt;
 	        			}
-	        			else if(k < 70)
+	        			else if(k < 75)
 	        			{
 	        				if(depth == 0)
 	        				{
-		        				int r = k - 62;
+		        				int r = (int)((k - 62f) / 2f);
 		        				if(rand.nextInt(r + 1) == 0)
 		        				{
 			        				blocks[(y * 16 + x) * 256 + k] = Blocks.grass;
