@@ -51,13 +51,10 @@ public class TerrainCanyon extends TerrainBase
 	@Override
 	public float generateNoise(PerlinNoise perlin, CellNoise cell, int x, int y, float ocean, float border, float river)
 	{
-		//float b = perlin.noise2(x / cWidth, y / cWidth) * cHeigth * river;
-		//b *= b / cStrength;
-		river *= 1.3f;
-		river = river > 1f ? 1f : river;
-		float b = 27f * river;
-		
-		float hn = perlin.noise2(x / 12f, y / 12f) * 0.5f;
+		float b = perlin.noise2(x / cWidth, y / cWidth) * cHeigth * river;
+		b *= b / cStrength;
+
+		float hn = perlin.noise2(x / 12f, y / 12f);
 		float sb = 0f;
 		if(b > 0f)
 		{
@@ -73,7 +70,7 @@ public class TerrainCanyon extends TerrainBase
 		for(int i = 0; i < heightLength; i += 2)
 		{
 			cTemp = 0;
-			if(b > height[i] && border > 0.6f + (height[i] * 0.015f) + hn * 0.2f)
+			if(b > height[i] && border > 0.7f + (height[i] * 0.012f) + hn * 0.09f)
 			{
 				cTemp = b > height[i] + height[i + 1] ? height[i + 1] : b - height[i];
 				cTemp *= strength;

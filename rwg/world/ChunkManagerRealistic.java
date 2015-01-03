@@ -141,14 +141,7 @@ public class ChunkManagerRealistic extends WorldChunkManager
     
     public RealisticBiomeBase getBiomeDataAt(int par1, int par2, float ocean)
     {
-    	if(par1 < 0f)
-    	{
-        	return RealisticBiomeBase.savannaDunes;
-    	}
-    	else
-    	{
-        	return RealisticBiomeBase.canyon;
-    	}
+    	return RealisticBiomeBase.desertMountains;
 
     	/*
     	float b = (biomecell.noise(par1 / 1500D, par2 / 1500D, 1D) * 0.5f) + 0.5f;

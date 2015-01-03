@@ -1,6 +1,7 @@
 package rwg.world;
 
-import static net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable.EventType.*;
+//import static net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate.EventType.*;
+//import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -78,15 +79,6 @@ public class ChunkGeneratorRealistic implements IChunkProvider
     private float[][] hugeRender;
     private float[][] smallRender;
     private float[] testHeight;
-    
-	private WorldGenMinable ore_dirt = new WorldGenMinable(Blocks.dirt, 32);
-	private WorldGenMinable ore_gravel = new WorldGenMinable(Blocks.gravel, 32);
-	private WorldGenMinable ore_coal = new WorldGenMinable(Blocks.coal_ore, 16);
-	private WorldGenMinable ore_iron = new WorldGenMinable(Blocks.iron_ore, 8);
-	private WorldGenMinable ore_gold = new WorldGenMinable(Blocks.gold_ore, 8);
-	private WorldGenMinable ore_redstone = new WorldGenMinable(Blocks.redstone_ore, 7);
-	private WorldGenMinable ore_diamond = new WorldGenMinable(Blocks.diamond_ore, 7);
-	private WorldGenMinable ore_lapis = new WorldGenMinable(Blocks.lapis_ore, 6);
 	
     public ChunkGeneratorRealistic(World world, long l)
     {
@@ -342,7 +334,7 @@ public class ChunkGeneratorRealistic implements IChunkProvider
     			if(randBiome)
     			{
     				bCount = 0f;
-    				bRand = 0.5f + perlin.noise2((float)(x + i) / 15f, (float)(y + j) / 15f);
+    				bRand = 0.5f + perlin.noise2((float)(x + i) / 15f, (float)(y + j) / 15f); //1f + rand.nextFloat();
     				bRand = bRand < 0f ? 0f : bRand > 0.99999f ? 0.99999f : bRand;
     			}
     			
@@ -351,7 +343,6 @@ public class ChunkGeneratorRealistic implements IChunkProvider
     			
     			testHeight[i * 16 + j] = 0f;
     			
-    			river = cmr.getRiverStrength(x + i, y + j);
     			for(k = 0; k < 256; k++)
     			{
     				if(smallRender[l][k] > 0f)
@@ -366,7 +357,8 @@ public class ChunkGeneratorRealistic implements IChunkProvider
     	    				}
     	    			}
     	    			
-    					testHeight[i * 16 + j] += cmr.calculateRiver(x + i, y + j, river, RealisticBiomeBase.getBiome(k).rNoise(perlin, cell, x + i, y + j, ocean, smallRender[l][k], river + 1f)) * smallRender[l][k];
+    	    			river = cmr.getRiverStrength(x + i, y + j);
+    					testHeight[i * 16 + j] += cmr.calculateRiver(x + i, y + j, river, RealisticBiomeBase.getBiome(k).rNoise(perlin, cell, x + i, y + j, ocean, smallRender[l][k], river + 1f) * smallRender[l][k]);
     				}
     			}
     		}
@@ -484,95 +476,71 @@ public class ChunkGeneratorRealistic implements IChunkProvider
 		}
 		
 		MinecraftForge.ORE_GEN_BUS.post(new OreGenEvent.Pre(worldObj, rand, x, y));
-
-		if (TerrainGen.generateOre(worldObj, rand, ore_dirt, x, y, DIRT))
+		
+		for(int j2 = 0; j2 < 10; j2++)
 		{
-			for(int j2 = 0; j2 < 10; j2++)
-			{
-				int l5 = x + rand.nextInt(16);
-				int i9 = rand.nextInt(64);
-				int l11 = y + rand.nextInt(16);
-				ore_dirt.generate(worldObj, rand, l5, i9, l11);
-			}
+			int l5 = x + rand.nextInt(16);
+			int i9 = rand.nextInt(64);
+			int l11 = y + rand.nextInt(16);
+			(new WorldGenMinable(Blocks.dirt, 32)).generate(worldObj, rand, l5, i9, l11);
 		}
 
-		if (TerrainGen.generateOre(worldObj, rand, ore_gravel, x, y, GRAVEL))
+		for(int k2 = 0; k2 < 5; k2++)
 		{
-			for(int k2 = 0; k2 < 5; k2++)
-			{
-				int i6 = x + rand.nextInt(16);
-				int j9 = rand.nextInt(64);
-				int i12 = y + rand.nextInt(16);
-				ore_gravel.generate(worldObj, rand, i6, j9, i12);
-			}
+			int i6 = x + rand.nextInt(16);
+			int j9 = rand.nextInt(64);
+			int i12 = y + rand.nextInt(16);
+			(new WorldGenMinable(Blocks.gravel, 32)).generate(worldObj, rand, i6, j9, i12);
 		}
 
-		if (TerrainGen.generateOre(worldObj, rand, ore_coal, x, y, COAL))
+		for(int i3 = 0; i3 < 20; i3++)
 		{
-			for(int i3 = 0; i3 < 20; i3++)
-			{
-				int j6 = x + rand.nextInt(16);
-				int k9 = rand.nextInt(128);
-				int j12 = y + rand.nextInt(16);
-				ore_coal.generate(worldObj, rand, j6, k9, j12);
-			}
+			int j6 = x + rand.nextInt(16);
+			int k9 = rand.nextInt(128);
+			int j12 = y + rand.nextInt(16);
+			(new WorldGenMinable(Blocks.coal_ore, 16)).generate(worldObj, rand, j6, k9, j12);
 		}
 
-		if (TerrainGen.generateOre(worldObj, rand, ore_iron, x, y, IRON))
+		for(int j3 = 0; j3 < 20; j3++)
 		{
-			for(int j3 = 0; j3 < 20; j3++)
-			{
-				int k6 = x + rand.nextInt(16);
-				int l9 = rand.nextInt(64);
-				int k12 = y + rand.nextInt(16);
-				ore_iron.generate(worldObj, rand, k6, l9, k12);
-			}
+			int k6 = x + rand.nextInt(16);
+			int l9 = rand.nextInt(64);
+			int k12 = y + rand.nextInt(16);
+			(new WorldGenMinable(Blocks.iron_ore, 8)).generate(worldObj, rand, k6, l9, k12);
 		}
 
-		if (TerrainGen.generateOre(worldObj, rand, ore_gold, x, y, GOLD))
+		for(int k3 = 0; k3 < 2; k3++)
 		{
-			for(int k3 = 0; k3 < 2; k3++)
-			{
-				int l6 = x + rand.nextInt(16);
-				int i10 = rand.nextInt(32);
-				int l12 = y + rand.nextInt(16);
-				ore_gold.generate(worldObj, rand, l6, i10, l12);
-			}
+			int l6 = x + rand.nextInt(16);
+			int i10 = rand.nextInt(32);
+			int l12 = y + rand.nextInt(16);
+			(new WorldGenMinable(Blocks.gold_ore, 8)).generate(worldObj, rand, l6, i10, l12);
 		}
 
-		if (TerrainGen.generateOre(worldObj, rand, ore_redstone, x, y, REDSTONE))
+		for(int l3 = 0; l3 < 8; l3++)
 		{
-			for(int l3 = 0; l3 < 8; l3++)
-			{
-				int i7 = x + rand.nextInt(16);
-				int j10 = rand.nextInt(16);
-				int i13 = y + rand.nextInt(16);
-				ore_redstone.generate(worldObj, rand, i7, j10, i13);
-			}
+			int i7 = x + rand.nextInt(16);
+			int j10 = rand.nextInt(16);
+			int i13 = y + rand.nextInt(16);
+			(new WorldGenMinable(Blocks.redstone_ore, 7)).generate(worldObj, rand, i7, j10, i13);
 		}
 
-		if (TerrainGen.generateOre(worldObj, rand, ore_diamond, x, y, DIAMOND))
+		for(int i4 = 0; i4 < 1; i4++)
 		{
-			for(int i4 = 0; i4 < 1; i4++)
-			{
-				int j7 = x + rand.nextInt(16);
-				int k10 = rand.nextInt(16);
-				int j13 = y + rand.nextInt(16);
-				ore_diamond.generate(worldObj, rand, j7, k10, j13);
-			}
+			int j7 = x + rand.nextInt(16);
+			int k10 = rand.nextInt(16);
+			int j13 = y + rand.nextInt(16);
+			(new WorldGenMinable(Blocks.diamond_ore, 7)).generate(worldObj, rand, j7, k10, j13);
 		}
 
-		if (TerrainGen.generateOre(worldObj, rand, ore_lapis, x, y, LAPIS))
+		for(int j4 = 0; j4 < 1; j4++)
 		{
-			for(int j4 = 0; j4 < 1; j4++)
-			{
-				int k7 = x + rand.nextInt(16);
-				int l10 = rand.nextInt(16) + rand.nextInt(16);
-				int k13 = y + rand.nextInt(16);
-				ore_lapis.generate(worldObj, rand, k7, l10, k13);
-			}
+			int k7 = x + rand.nextInt(16);
+			int l10 = rand.nextInt(16) + rand.nextInt(16);
+			int k13 = y + rand.nextInt(16);
+			(new WorldGenMinable(Blocks.lapis_ore, 6)).generate(worldObj, rand, k7, l10, k13);
 		}
-
+		
         for (int g12 = 0; g12 < 4; ++g12)
         {
             int n1 = x + rand.nextInt(16);

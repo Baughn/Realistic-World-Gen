@@ -86,7 +86,7 @@ public class SupportBOP
 		Support.biomes_hot.add(
 			new RealisticBiomeSupport(
 				BOPCBiomes.canyon, 
-				new TerrainCanyon(true, new float[]{7.0f, 0.5f, 10.5f, 0.5f, 17.0f, 0.5f}, 35f, 160f, 60f, 40f, 69f),
+				new TerrainCanyon(true, new float[]{2.0f, 0.5f, 6.5f, 0.5f, 14.0f, 0.5f, 19.0f, 0.5f}, 35f, 160f, 60f, 40f, 69f),
 				new SurfaceCanyon(BOPCBiomes.canyon.topBlock, BOPCBiomes.canyon.fillerBlock, (byte)0)
 			)
 		);

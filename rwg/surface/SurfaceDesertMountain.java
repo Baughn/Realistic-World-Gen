@@ -47,7 +47,14 @@ public class SurfaceDesertMountain extends SurfaceBase
 		float c = CliffCalculator.calc(x, y, noise);
 		int cliff = 0;
 		boolean gravel = false;
-
+		boolean grass = false;
+		
+		if(river > 0.05f && river + (perlin.noise2(i / 10f, j / 10f) * 0.15f) > 0.8f)
+		{
+			grass = true;
+			base[x * 16 + y] = RWGBiomes.baseOasis;
+		}
+		
     	Block b;
 		for(int k = 255; k > -1; k--)
 		{
@@ -88,6 +95,17 @@ public class SurfaceDesertMountain extends SurfaceBase
         				blocks[(y * 16 + x) * 256 + k] = Blocks.stained_hardened_clay; 
         				metadata[(y * 16 + x) * 256 + k] = 9; 
             		}
+                	else if(grass)
+                	{
+    	        		if(depth == 0 && k > 61)
+    	        		{
+    	        			blocks[(y * 16 + x) * 256 + k] = Blocks.grass;
+    	        		}
+    	        		else if(depth < 4)
+    	        		{
+    	        			blocks[(y * 16 + x) * 256 + k] = Blocks.dirt;
+    	        		}
+                	}
             		else if(k < 63)
             		{
             			if(beach)
@@ -120,6 +138,17 @@ public class SurfaceDesertMountain extends SurfaceBase
         				blocks[(y * 16 + x) * 256 + k] = Blocks.stained_hardened_clay; 
         				metadata[(y * 16 + x) * 256 + k] = 9; 
             		}
+                	else if(grass)
+                	{
+    	        		if(depth == 0 && k > 61)
+    	        		{
+    	        			blocks[(y * 16 + x) * 256 + k] = Blocks.grass;
+    	        		}
+    	        		else if(depth < 4)
+    	        		{
+    	        			blocks[(y * 16 + x) * 256 + k] = Blocks.dirt;
+    	        		}
+                	}
             		else if(gravel)
             		{
             			blocks[(y * 16 + x) * 256 + k] = beachBlock;
