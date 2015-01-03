@@ -49,7 +49,27 @@ public class RealisticBiomeSavanna extends RealisticBiomeBase
 			(new WorldGenBlockBlob(Blocks.cobblestone, 0)).generate(world, rand, i1, k1, j1);
 		}
 		
-		if(perlin.noise2(chunkX / 180f, chunkY / 180f) > 0.20f)
+		if(river > 0.8f)
+		{
+			for(int b33 = 0; b33 < 15f * strength; b33++)
+			{
+				int j6 = chunkX + rand.nextInt(16) + 8;
+				int k10 = chunkY + rand.nextInt(16) + 8;
+				int z52 = world.getHeightValue(j6, k10);
+
+				WorldGenerator worldgenerator = rand.nextInt(3) != 0 ? new WorldGenShrub(0, 0) : rand.nextInt(7) == 0 ? new DecoSavannah(1): new DecoSavannah(2);
+				worldgenerator.setScale(1.0D, 1.0D, 1.0D);
+				worldgenerator.generate(world, rand, j6, z52, k10);
+			}
+			
+			for(int f25 = 0; f25 < 2f * strength; f25++)
+			{
+				int i18 = chunkX + rand.nextInt(16) + 8;
+				int i23 = chunkY + rand.nextInt(16) + 8;
+				(new WorldGenReed()).generate(world, rand, i18, 60 + rand.nextInt(8), i23);
+			}
+		}
+		else if(perlin.noise2(chunkX / 180f, chunkY / 180f) > 0.20f)
 		{
 			for(int b33 = 0; b33 < 7f * strength; b33++)
 			{

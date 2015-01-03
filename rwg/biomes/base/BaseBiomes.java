@@ -35,6 +35,6 @@ public class BaseBiomes
 		BiomeDictionary.registerBiomeType(RWGBiomes.baseTropicalIsland, Type.HOT, Type.WET, Type.JUNGLE);
 		BiomeDictionary.registerBiomeType(RWGBiomes.baseRedwood, Type.COLD, Type.CONIFEROUS, Type.FOREST);
 		BiomeDictionary.registerBiomeType(RWGBiomes.baseJungle, Type.HOT, Type.WET, Type.JUNGLE);
-		BiomeDictionary.registerBiomeType(RWGBiomes.baseOasis, Type.HOT, Type.WET, Type.JUNGLE);
+		BiomeDictionary.registerBiomeType(RWGBiomes.baseOasis, Type.HOT, Type.WET, Type.JUNGLE, Type.RIVER);
 	}
 }

@@ -2,6 +2,7 @@ package rwg.surface;
 
 import java.util.Random;
 
+import rwg.api.RWGBiomes;
 import rwg.util.CellNoise;
 import rwg.util.PerlinNoise;
 import net.minecraft.block.Block;
@@ -43,12 +44,13 @@ public class SurfaceDuneValley extends SurfaceBase
             else if(b == Blocks.stone)
             {
             	depth++;
-
-        		if(depth == 0)
+            	
+            	if(depth == 0)
         		{
-        			if(k > 90f + perlin.noise2(i / 24f, j / 24f) * 10f - h || (m < -0.28f && mix))
+                	if(k > 90f + perlin.noise2(i / 24f, j / 24f) * 10f - h || (m < -0.28f && mix))
         			{
     					blocks[(y * 16 + x) * 256 + k] = Blocks.sand;
+    					base[x * 16 + y] = RWGBiomes.baseHotDesert;
     					sand = true;
         			}
         			else if(dirt && m < 0.22f || k < 62)
