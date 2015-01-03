@@ -3,7 +3,6 @@ package rwg.biomes.realistic;
 import java.util.Random;
 
 import rwg.biomes.realistic.land.*;
-import rwg.biomes.realistic.old.*;
 import rwg.surface.SurfaceBase;
 import rwg.terrain.TerrainBase;
 import rwg.util.CellNoise;
@@ -17,6 +16,9 @@ public class RealisticBiomeBase
 {
 	private static final RealisticBiomeBase[] biomeList = new RealisticBiomeBase[256];
 	private static int nextBiomeID = 0;
+	
+	public static RealisticBiomeBase test = new RealisticBiomeTest();
+	public static RealisticBiomeBase river = new RealisticBiomeTestRiver();
 	
 	//SNOW 6 =========================================================================================
 	public static RealisticBiomeBase polar = new RealisticBiomePolar();
@@ -61,97 +63,7 @@ public class RealisticBiomeBase
 	
 	public static RealisticBiomeBase redwoodJungle; //dutch note to self: minder stam meer bladeren en varens
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	//============================= OLD BIOMES ===============================================
-	
-	//POLAR BIOMES
-	//public static RealisticBiomeBase oldlandPolarPlains = new OldRealisticBiomePolar(0);
-	//public static RealisticBiomeBase oldlandPolarLakes = new OldRealisticBiomePolar(1);
-	
-	//TUNDRA BIOMES
-	//public static RealisticBiomeBase oldlandTundraHillsHigh = new OldRealisticBiomeTundraHills(0);
-	//public static RealisticBiomeBase oldlandTundraHillsValley = new OldRealisticBiomeTundraHills(1);
-	//public static RealisticBiomeBase oldlandTundraHillsSpikes = new OldRealisticBiomeTundraHills(2);
-	//public static RealisticBiomeBase oldlandTundraPlainsPolar = new OldRealisticBiomeTundraPlains(0);
-	//public static RealisticBiomeBase oldlandTundraPlainsShield = new OldRealisticBiomeTundraPlains(1);
-	//public static RealisticBiomeBase oldlandTundraPlainsMix = new OldRealisticBiomeTundraPlains(2);
-	//public static RealisticBiomeBase oldlandTundraLakesIslands = new OldRealisticBiomeTundraLakes(0);
-	//public static RealisticBiomeBase oldlandTundraLakesShield = new OldRealisticBiomeTundraLakes(1);
-
-	//SNOW BIOMES
-	//public static RealisticBiomeBase oldlandSnowHillsHigh = new OldRealisticBiomeSnowHills(0);
-	//public static RealisticBiomeBase oldlandSnowHillsRivers = new OldRealisticBiomeSnowHills(1);
-	//public static RealisticBiomeBase oldlandSnowHillsSpikes = new OldRealisticBiomeSnowHills(2);
-	//public static RealisticBiomeBase oldlandSnowPlainsField = new OldRealisticBiomeSnowPlains(0);
-	//public static RealisticBiomeBase oldlandSnowLakesIslands = new OldRealisticBiomeSnowLakes(0);
-	
-	//TAIGA BIOMES
-	//public static RealisticBiomeBase oldlandTaigaHillsShield = new OldRealisticBiomeTaigaHills(0);
-	//public static RealisticBiomeBase oldlandTaigaHillsRivers = new OldRealisticBiomeTaigaHills(1);
-	//public static RealisticBiomeBase oldlandTaigaHillsSpikes = new OldRealisticBiomeTaigaHills(2);
-	//public static RealisticBiomeBase oldlandTaigaHillsMix = new OldRealisticBiomeTaigaHills(3);
-	//public static RealisticBiomeBase oldlandTaigaPlainsShield = new OldRealisticBiomeTaigaPlains(0);
-	//public static RealisticBiomeBase oldlandTaigaPlainsMix = new OldRealisticBiomeTaigaPlains(1);
-	//public static RealisticBiomeBase oldlandTaigaLakesIslands = new OldRealisticBiomeTaigaLakes(0);
-	//public static RealisticBiomeBase oldlandTaigaLakesSwamp = new OldRealisticBiomeTaigaLakes(1);
-	//public static RealisticBiomeBase oldlandTaigaLakesMix = new OldRealisticBiomeTaigaLakes(2);
-	
-	//REDWOOD BIOMES
-	//public static RealisticBiomeBase landRedwoodHillsRivers;
-	//public static RealisticBiomeBase landRedwoodHillsSpikes;
-	//public static RealisticBiomeBase landRedwoodPlainsField;
-	//public static RealisticBiomeBase landRedwoodPlainsLakes;
-	
-	//WIP ===========================================================================================
-	//public static RealisticBiomeBase oldtest = new OldRealisticBiomeTest();
-	//public static RealisticBiomeBase oldlow = new OldRealisticBiomeTestHeight(0);
-	//public static RealisticBiomeBase oldhigh = new OldRealisticBiomeTestHeight(1);
-	
-	//public static RealisticBiomeBase oldlandRedwoodSpikes = new OldRealisticBiomeRedwood(0);
-	
-	//public static RealisticBiomeBase landGlacierHigh = new RealisticBiomeGlacier(0);
-	//public static RealisticBiomeBase landGlacierLow = new RealisticBiomeGlacier(1);
-	//public static RealisticBiomeBase oldlandPlainsPrairie = new OldRealisticBiomePlainsHot(0);
-	//public static RealisticBiomeBase oldlandPlainsSavanna = new OldRealisticBiomePlainsHot(1);
-	//public static RealisticBiomeBase oldlandPlainsPlains = new OldRealisticBiomePlains(0);
-	//public static RealisticBiomeBase oldlandPlainsGrassland = new OldRealisticBiomePlains(1);
-	//public static RealisticBiomeBase oldlandDesertHills = new OldRealisticBiomeDesert(0);
-	//public static RealisticBiomeBase oldlandDesertMountains = new OldRealisticBiomeDesert(1);
-	//public static RealisticBiomeBase oldlandDesertDunes = new OldRealisticBiomeDesert(2);
-	
-	//public static RealisticBiomeBase landTaigaHills = new RealisticBiomeTaiga(0);
-	//public static RealisticBiomeBase landTaigaFields = new RealisticBiomeTaiga(1);
-	
-	//public static RealisticBiomeBase landSnowHills = new RealisticBiomeSnow(0);
-	//public static RealisticBiomeBase landSnowFields = new RealisticBiomeSnow(1);
-	//public static RealisticBiomeBase landSnowLakes = new RealisticBiomeSnow(2);
-	//public static RealisticBiomeBase oldlandSaltLakes = new OldRealisticBiomeSaltLakes();
-	
-	//public static RealisticBiomeBase landRedwoodLakes
-	//public static RealisticBiomeBase landRedwoodFields
-	//public static RealisticBiomeBase landRedwoodHills
-	
-	//public static RealisticBiomeBase oldlandRockDesert = new OldRealisticBiomeRockDesert();
-	//public static RealisticBiomeBase oldlandCanyonMesa = new OldRealisticBiomeMesa();
-	//public static RealisticBiomeBase landCanyonCanyon
-	//public static RealisticBiomeBase landCanyonForest
-	//public static RealisticBiomeBase landCanyonGreen
-	//public static RealisticBiomeBase landCanyonJungle
-	
-	//public static RealisticBiomeBase landSavannaFields
-	//public static RealisticBiomeBase landSavannaForest
-	//public static RealisticBiomeBase landSavannaHills
-	
-	//public static RealisticBiomeBase oceanTropicalAtoll = new OldRealisticBiomeAtoll();
+	// ==============================================================================================
 	
 	public final int biomeID;
 	public final int subID;
@@ -176,16 +88,16 @@ public class RealisticBiomeBase
 	//======================================================================================================================================
 	
 	
-    public void rDecorate(World world, Random rand, int chunkX, int chunkY, PerlinNoise perlin, CellNoise cell, float strength)
+    public void rDecorate(World world, Random rand, int chunkX, int chunkY, PerlinNoise perlin, CellNoise cell, float strength, float river)
     {
     }
     
-    public float rNoise(PerlinNoise perlin, CellNoise cell, int x, int y, float ocean, float border)
+    public float rNoise(PerlinNoise perlin, CellNoise cell, int x, int y, float ocean, float border, float river)
     {
     	return 63f;
     }
     
-    public void rReplace(Block[] blocks, byte[] metadata, int i, int j, int x, int y, int depth, World world, Random rand, PerlinNoise perlin, CellNoise cell, float[] noise)
+    public void rReplace(Block[] blocks, byte[] metadata, int i, int j, int x, int y, int depth, World world, Random rand, PerlinNoise perlin, CellNoise cell, float[] noise, float river, BiomeGenBase[] base)
     {
     	Block b;
 		for(int k = 255; k > -1; k--)

@@ -9,7 +9,7 @@ public class TerrainBase
 	{
 	}
 	
-	public float generateNoise(PerlinNoise perlin, CellNoise cell, int x, int y, float ocean, float border)
+	public float generateNoise(PerlinNoise perlin, CellNoise cell, int x, int y, float ocean, float border, float river)
 	{
 		return 70f;
 	}

@@ -40,7 +40,8 @@ public class RealisticBiomeRedwoodSnow extends RealisticBiomeBase
 		surface = new SurfaceMountainSnow(Blocks.grass, Blocks.dirt, true, Blocks.sand, 0.2f);
 	}
 	
-    public void rDecorate(World world, Random rand, int chunkX, int chunkY, PerlinNoise perlin, CellNoise cell, float strength)
+	@Override
+    public void rDecorate(World world, Random rand, int chunkX, int chunkY, PerlinNoise perlin, CellNoise cell, float strength, float river)
     {
 		float l = perlin.noise2(chunkX / 80f, chunkY / 80f) * 40f + 10f;
 		for (int b1 = 0; b1 < l * strength; b1++)
@@ -132,13 +133,13 @@ public class RealisticBiomeRedwoodSnow extends RealisticBiomeBase
 		}
     }
     
-    public float rNoise(PerlinNoise perlin, CellNoise cell, int x, int y, float ocean, float border)
+    public float rNoise(PerlinNoise perlin, CellNoise cell, int x, int y, float ocean, float border, float river)
     {
-    	return terrain.generateNoise(perlin, cell, x, y, ocean, border);
+    	return terrain.generateNoise(perlin, cell, x, y, ocean, border, river);
     }
     
-    public void rReplace(Block[] blocks, byte[] metadata, int i, int j, int x, int y, int depth, World world, Random rand, PerlinNoise perlin, CellNoise cell, float[] noise)
+    public void rReplace(Block[] blocks, byte[] metadata, int i, int j, int x, int y, int depth, World world, Random rand, PerlinNoise perlin, CellNoise cell, float[] noise, float river, BiomeGenBase[] base)
     {
-    	surface.paintTerrain(blocks, metadata, i, j, x, y, depth, world, rand, perlin, cell, noise);
+    	surface.paintTerrain(blocks, metadata, i, j, x, y, depth, world, rand, perlin, cell, noise, river, base);
     }
 }

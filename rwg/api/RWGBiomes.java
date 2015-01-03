@@ -18,6 +18,7 @@ public class RWGBiomes
 	public static BiomeGenBase baseTropicalIsland;
 	public static BiomeGenBase baseRedwood;
 	public static BiomeGenBase baseJungle;
+	public static BiomeGenBase baseOasis;
 	
 	/*
 	 * This function will never break. use this instead of the above.
@@ -35,7 +36,8 @@ public class RWGBiomes
 			basePlains,
 			baseTropicalIsland,
 			baseRedwood,
-			baseJungle
+			baseJungle,
+			baseOasis
 		};
 	}
 }

@@ -5,7 +5,7 @@ import rwg.util.PerlinNoise;
 
 public class TerrainCanyon extends TerrainBase
 {
-	private boolean river;
+	private boolean smallRiver;
 	private float[] height;
 	private int heightLength;
 	private float strength;
@@ -38,7 +38,7 @@ public class TerrainCanyon extends TerrainBase
 	 */
 	public TerrainCanyon(boolean riverGen, float[] heightArray, float heightStrength, float canyonWidth, float canyonHeight, float canyonStrength, float baseHeight)
 	{
-		river = riverGen;
+		smallRiver = riverGen;
 		height = heightArray;
 		strength = heightStrength;
 		heightLength = height.length;
@@ -49,9 +49,9 @@ public class TerrainCanyon extends TerrainBase
 	}
 
 	@Override
-	public float generateNoise(PerlinNoise perlin, CellNoise cell, int x, int y, float ocean, float border)
+	public float generateNoise(PerlinNoise perlin, CellNoise cell, int x, int y, float ocean, float border, float river)
 	{
-		float b = perlin.noise2(x / cWidth, y / cWidth) * cHeigth;
+		float b = perlin.noise2(x / cWidth, y / cWidth) * cHeigth * river;
 		b *= b / cStrength;
 
 		float hn = perlin.noise2(x / 12f, y / 12f);
@@ -80,7 +80,7 @@ public class TerrainCanyon extends TerrainBase
 		
 		
 		float bn = 0f;
-		if(river)
+		if(smallRiver)
 		{
 			if(b < 5f)
 			{

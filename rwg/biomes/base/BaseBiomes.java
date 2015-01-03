@@ -22,6 +22,7 @@ public class BaseBiomes
 		RWGBiomes.baseTropicalIsland = new BaseBiomeTropicalIsland(ConfigRWG.biomeIDs[8], "rwg_tropical");
 		RWGBiomes.baseRedwood = new BaseBiomeRedwood(ConfigRWG.biomeIDs[9], "rwg_redwood");
 		RWGBiomes.baseJungle = new BaseBiomeJungle(ConfigRWG.biomeIDs[10], "rwg_jungle");
+		RWGBiomes.baseOasis = new BaseBiomeOasis(ConfigRWG.biomeIDs[11], "rwg_oasis");
 		
 		BiomeDictionary.registerBiomeType(RWGBiomes.baseSnowDesert, Type.COLD, Type.SNOWY, Type.WASTELAND);
 		BiomeDictionary.registerBiomeType(RWGBiomes.baseSnowForest, Type.COLD, Type.SNOWY, Type.CONIFEROUS, Type.FOREST);
@@ -34,5 +35,6 @@ public class BaseBiomes
 		BiomeDictionary.registerBiomeType(RWGBiomes.baseTropicalIsland, Type.HOT, Type.WET, Type.JUNGLE);
 		BiomeDictionary.registerBiomeType(RWGBiomes.baseRedwood, Type.COLD, Type.CONIFEROUS, Type.FOREST);
 		BiomeDictionary.registerBiomeType(RWGBiomes.baseJungle, Type.HOT, Type.WET, Type.JUNGLE);
+		BiomeDictionary.registerBiomeType(RWGBiomes.baseOasis, Type.HOT, Type.WET, Type.JUNGLE);
 	}
 }

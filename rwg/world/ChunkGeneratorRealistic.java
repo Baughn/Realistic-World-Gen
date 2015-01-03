@@ -1,5 +1,8 @@
 package rwg.world;
 
+//import static net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate.EventType.*;
+//import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.*;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +46,9 @@ import net.minecraft.world.gen.structure.MapGenVillage;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.ChunkProviderEvent;
 import net.minecraftforge.event.terraingen.DecorateBiomeEvent;
+import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
+import net.minecraftforge.event.terraingen.TerrainGen;
 
 public class ChunkGeneratorRealistic implements IChunkProvider
 {
@@ -321,6 +326,7 @@ public class ChunkGeneratorRealistic implements IChunkProvider
     		}
     	}
     	
+    	float river;
     	for(i = 0; i < 16; i++)
     	{
     		for(j = 0; j < 16; j++)
@@ -350,8 +356,9 @@ public class ChunkGeneratorRealistic implements IChunkProvider
     	    					bCount = 2f; //20f;
     	    				}
     	    			}
-    					
-    					testHeight[i * 16 + j] += RealisticBiomeBase.getBiome(k).rNoise(perlin, cell, x + i, y + j, ocean, smallRender[l][k]) * smallRender[l][k];
+    	    			
+    	    			river = cmr.getRiverStrength(x + i, y + j);
+    					testHeight[i * 16 + j] += cmr.calculateRiver(x + i, y + j, river, RealisticBiomeBase.getBiome(k).rNoise(perlin, cell, x + i, y + j, ocean, smallRender[l][k], river + 1f) * smallRender[l][k]);
     				}
     			}
     		}
@@ -392,7 +399,7 @@ public class ChunkGeneratorRealistic implements IChunkProvider
     			RealisticBiomeBase biome = biomes[i * 16 + j];
     			depth = -1;
                 
-    			biome.rReplace(blocks, metadata, cx * 16 + j, cy * 16 + i, i, j, depth, worldObj, rand, perlin, cell, n);
+    			biome.rReplace(blocks, metadata, cx * 16 + j, cy * 16 + i, i, j, depth, worldObj, rand, perlin, cell, n, -cmr.getRiverStrength(cx * 16 + j, cy * 16 + i), base);
     			
     			blocks[(j * 16 + i) * 256] = Blocks.bedrock;
     			blocks[(j * 16 + i) * 256 + rand.nextInt(2)] = Blocks.bedrock;
@@ -435,8 +442,11 @@ public class ChunkGeneratorRealistic implements IChunkProvider
         mineshaftGenerator.generateStructuresInChunk(worldObj, rand, i, j);
         strongholdGenerator.generateStructuresInChunk(worldObj, rand, i, j);
         villageGenerator.generateStructuresInChunk(worldObj, rand, i, j);
+        
+        boolean gen = false;
 
-        if(rand.nextInt(10) == 0)
+        gen = TerrainGen.populate(this, worldObj, rand, i, j, flag, PopulateChunkEvent.Populate.EventType.LAKE);
+        if(gen && rand.nextInt(10) == 0)
 		{
 			int i2 = x + rand.nextInt(16) + 8;
 			int l4 = rand.nextInt(50);
@@ -444,7 +454,8 @@ public class ChunkGeneratorRealistic implements IChunkProvider
 			(new WorldGenLakes(Blocks.water)).generate(worldObj, rand, i2, l4, i8);
 		}
 		
-		if(rand.nextInt(18) == 0) 
+        gen = TerrainGen.populate(this, worldObj, rand, i, j, flag, PopulateChunkEvent.Populate.EventType.LAVA);
+		if(gen && rand.nextInt(18) == 0) 
 		{
 			int j2 = x + rand.nextInt(16) + 8;
 			int i5 = rand.nextInt(rand.nextInt(45) + 8);
@@ -455,13 +466,16 @@ public class ChunkGeneratorRealistic implements IChunkProvider
 			}
 		} 
 		
-		for(int k1 = 0; k1 < 8; k1++)
+		gen = TerrainGen.populate(this, worldObj, rand, i, j, flag, PopulateChunkEvent.Populate.EventType.DUNGEON);
+		for(int k1 = 0; k1 < 8 && gen; k1++)
 		{
 			int j5 = x + rand.nextInt(16) + 8;
 			int k8 = rand.nextInt(128);
 			int j11 = y + rand.nextInt(16) + 8;
 			(new WorldGenDungeons()).generate(worldObj, rand, j5, k8, j11);
 		}
+		
+		MinecraftForge.ORE_GEN_BUS.post(new OreGenEvent.Pre(worldObj, rand, x, y));
 		
 		for(int j2 = 0; j2 < 10; j2++)
 		{
@@ -539,6 +553,8 @@ public class ChunkGeneratorRealistic implements IChunkProvider
             }
         }
         
+        MinecraftForge.ORE_GEN_BUS.post(new OreGenEvent.Post(worldObj, rand, x, y));
+        
 		if(rand.nextInt(5) == 0)
 		{
 			int k15 = x + rand.nextInt(16) + 8;
@@ -564,10 +580,18 @@ public class ChunkGeneratorRealistic implements IChunkProvider
         	}
         }
         
-        MinecraftForge.EVENT_BUS.post(new DecorateBiomeEvent.Pre(worldObj, rand, i, j));
+        MinecraftForge.EVENT_BUS.post(new DecorateBiomeEvent.Pre(worldObj, rand, x, y));
+
+        //lazy fix
+        TerrainGen.decorate(worldObj, rand, x, y, DecorateBiomeEvent.Decorate.EventType.SAND);
+        TerrainGen.decorate(worldObj, rand, x, y, DecorateBiomeEvent.Decorate.EventType.CLAY);
+        TerrainGen.decorate(worldObj, rand, x, y, DecorateBiomeEvent.Decorate.EventType.SAND_PASS2);
+        TerrainGen.decorate(worldObj, rand, x, y, DecorateBiomeEvent.Decorate.EventType.TREE);
+        TerrainGen.decorate(worldObj, rand, x, y, DecorateBiomeEvent.Decorate.EventType.BIG_SHROOM);
         
         RealisticBiomeBase b;
         float snow = 0f;
+        float river = -cmr.getRiverStrength(x + 16, y + 16);
         for(int bn = 0; bn < 256; bn++)
         {
         	if(biomeNoise[bn] > 0f)
@@ -577,7 +601,7 @@ public class ChunkGeneratorRealistic implements IChunkProvider
         			biomeNoise[bn] = 1f;
         		}
         		b = RealisticBiomeBase.getBiome(bn);
-                b.rDecorate(this.worldObj, this.rand, x, y, perlin, cell, biomeNoise[bn]);
+                b.rDecorate(this.worldObj, this.rand, x, y, perlin, cell, biomeNoise[bn], river);
                 
                 if(b.baseBiome.temperature < 0.15f)
                 {
@@ -590,7 +614,18 @@ public class ChunkGeneratorRealistic implements IChunkProvider
         	}
         }
         
-        MinecraftForge.EVENT_BUS.post(new DecorateBiomeEvent.Post(worldObj, rand, i, j));
+        //lazy fix
+        TerrainGen.decorate(worldObj, rand, x, y, DecorateBiomeEvent.Decorate.EventType.FLOWERS);
+        TerrainGen.decorate(worldObj, rand, x, y, DecorateBiomeEvent.Decorate.EventType.GRASS);
+        TerrainGen.decorate(worldObj, rand, x, y, DecorateBiomeEvent.Decorate.EventType.DEAD_BUSH);
+        TerrainGen.decorate(worldObj, rand, x, y, DecorateBiomeEvent.Decorate.EventType.LILYPAD);
+        TerrainGen.decorate(worldObj, rand, x, y, DecorateBiomeEvent.Decorate.EventType.SHROOM);
+        TerrainGen.decorate(worldObj, rand, x, y, DecorateBiomeEvent.Decorate.EventType.REED);
+        TerrainGen.decorate(worldObj, rand, x, y, DecorateBiomeEvent.Decorate.EventType.PUMPKIN);
+        TerrainGen.decorate(worldObj, rand, x, y, DecorateBiomeEvent.Decorate.EventType.CACTUS);
+        TerrainGen.decorate(worldObj, rand, x, y, DecorateBiomeEvent.Decorate.EventType.LAKE);
+        
+        MinecraftForge.EVENT_BUS.post(new DecorateBiomeEvent.Post(worldObj, rand, x, y));
         
 		for(int l18 = 0; l18 < 50; l18++)
 		{
@@ -607,11 +642,15 @@ public class ChunkGeneratorRealistic implements IChunkProvider
 			int i25 = y + rand.nextInt(16) + 8;
 			(new WorldGenLiquids(Blocks.flowing_lava)).generate(worldObj, rand, i22, l23, i25);
 		}
-        
-        SpawnerAnimals.performWorldGenSpawning(this.worldObj, biome.baseBiome, x + 8, y + 8, 16, 16, this.rand);
+		
+        if (TerrainGen.populate(this, worldObj, rand, i, j, flag, PopulateChunkEvent.Populate.EventType.ANIMALS))
+        {
+            SpawnerAnimals.performWorldGenSpawning(this.worldObj, biome.baseBiome, x + 8, y + 8, 16, 16, this.rand);
+        }
 
         MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Post(ichunkprovider, worldObj, rand, i, j, flag));
 
+        TerrainGen.populate(this, worldObj, rand, i, j, flag, PopulateChunkEvent.Populate.EventType.ICE);
         if(snow < 0.59f)
         {
 	        x += 8;

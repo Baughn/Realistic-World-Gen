@@ -7,6 +7,7 @@ import rwg.util.PerlinNoise;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeGenBase;
 
 public class SurfaceDuneValley extends SurfaceBase
 {
@@ -24,7 +25,7 @@ public class SurfaceDuneValley extends SurfaceBase
 	}
 	
 	@Override
-	public void paintTerrain(Block[] blocks, byte[] metadata, int i, int j, int x, int y, int depth, World world, Random rand, PerlinNoise perlin, CellNoise cell, float[] noise)
+	public void paintTerrain(Block[] blocks, byte[] metadata, int i, int j, int x, int y, int depth, World world, Random rand, PerlinNoise perlin, CellNoise cell, float[] noise, float river, BiomeGenBase[] base)
 	{
     	float h = (perlin.noise2(i / valley, j / valley) + 0.25f) * 65f;
     	h = h < 1f ? 1f : h;

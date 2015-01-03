@@ -8,6 +8,7 @@ import rwg.util.PerlinNoise;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeGenBase;
 
 public class SurfaceMountainStone extends SurfaceBase
 {
@@ -39,7 +40,7 @@ public class SurfaceMountainStone extends SurfaceBase
 	}
 	
 	@Override
-	public void paintTerrain(Block[] blocks, byte[] metadata, int i, int j, int x, int y, int depth, World world, Random rand, PerlinNoise perlin, CellNoise cell, float[] noise)
+	public void paintTerrain(Block[] blocks, byte[] metadata, int i, int j, int x, int y, int depth, World world, Random rand, PerlinNoise perlin, CellNoise cell, float[] noise, float river, BiomeGenBase[] base)
 	{
 		float p = perlin.noise2(i / 8f, j / 8f) * 0.5f;
 		float c = CliffCalculator.calc(x, y, noise);

@@ -2,12 +2,14 @@ package rwg.surface;
 
 import java.util.Random;
 
+import rwg.api.RWGBiomes;
 import rwg.util.CellNoise;
 import rwg.util.CliffCalculator;
 import rwg.util.PerlinNoise;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeGenBase;
 
 public class SurfaceDesert extends SurfaceBase
 {
@@ -25,10 +27,17 @@ public class SurfaceDesert extends SurfaceBase
 	}
 	
 	@Override
-	public void paintTerrain(Block[] blocks, byte[] metadata, int i, int j, int x, int y, int depth, World world, Random rand, PerlinNoise perlin, CellNoise cell, float[] noise)
+	public void paintTerrain(Block[] blocks, byte[] metadata, int i, int j, int x, int y, int depth, World world, Random rand, PerlinNoise perlin, CellNoise cell, float[] noise, float river, BiomeGenBase[] base)
 	{
 		float c = CliffCalculator.calc(x, y, noise);
 		boolean cliff = c > 2.8f ? true : false;
+		boolean grass = false;
+		
+		if(river > 0.05f && river + (perlin.noise2(i / 10f, j / 10f) * 0.15f) > 0.8f)
+		{
+			grass = true;
+			base[x * 16 + y] = RWGBiomes.baseOasis;
+		}
 		
 		for(int k = 255; k > -1; k--)
 		{
@@ -51,6 +60,17 @@ public class SurfaceDesert extends SurfaceBase
             		{
             			blocks[(y * 16 + x) * 256 + k] = cliffBlock1;
             		}
+            	}
+            	else if(grass)
+            	{
+	        		if(depth == 0 && k > 61)
+	        		{
+	        			blocks[(y * 16 + x) * 256 + k] = Blocks.grass;
+	        		}
+	        		else if(depth < 4)
+	        		{
+	        			blocks[(y * 16 + x) * 256 + k] = Blocks.dirt;
+	        		}
             	}
             	else if(depth < 6)
             	{

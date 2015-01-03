@@ -10,9 +10,9 @@ public class TerrainMesa extends TerrainBase
 	}
 	
 	@Override
-	public float generateNoise(PerlinNoise perlin, CellNoise cell, int x, int y, float ocean, float border)
+	public float generateNoise(PerlinNoise perlin, CellNoise cell, int x, int y, float ocean, float border, float river)
 	{
-		float b = perlin.noise2(x / 130f, y / 130f) * 50f;
+		float b = perlin.noise2(x / 130f, y / 130f) * 50f * river;
 		b *= b / 40f;
 		
 		float hn = perlin.noise2(x / 12f, y / 12f);

@@ -10,12 +10,12 @@ public class TerrainGrasslandMountains extends TerrainBase
 	}
 	
 	@Override
-	public float generateNoise(PerlinNoise perlin, CellNoise cell, int x, int y, float ocean, float border)
+	public float generateNoise(PerlinNoise perlin, CellNoise cell, int x, int y, float ocean, float border, float river)
 	{
 		float h = perlin.noise2(x / 100f, y / 100f) * 7;
 		h += perlin.noise2(x / 20f, y / 20f) * 2;
 		
-		float m = perlin.noise2(x / 230f, y / 230f) * 120f;
+		float m = perlin.noise2(x / 230f, y / 230f) * 120f * river;
 		m *= m / 35f;
 		m = m > 70f ? 70f + (m - 70f) / 2.5f : m;
 		

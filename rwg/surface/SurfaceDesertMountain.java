@@ -2,6 +2,7 @@ package rwg.surface;
 
 import java.util.Random;
 
+import rwg.api.RWGBiomes;
 import rwg.util.CellNoise;
 import rwg.util.CliffCalculator;
 import rwg.util.PerlinNoise;
@@ -10,7 +11,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 
-public class SurfaceMountainStoneMix1 extends SurfaceBase
+public class SurfaceDesertMountain extends SurfaceBase
 {
 	private boolean beach;
 	private Block beachBlock;
@@ -21,23 +22,22 @@ public class SurfaceMountainStoneMix1 extends SurfaceBase
 	private float sStrength = 65f;
 	private float cCliff = 1.5f;
 	
-	private Block mix;
-	private float mixHeight;
-	
-	public SurfaceMountainStoneMix1(Block top, Block fill, boolean genBeach, Block genBeachBlock, float minCliff, float stoneCliff, float stoneHeight, float stoneStrength, float clayCliff, Block mixBlock, float mixSize)
+	public SurfaceDesertMountain(Block top, Block fill, boolean genBeach, Block genBeachBlock, float minCliff) 
 	{
 		super(top, fill);
 		beach = genBeach;
 		beachBlock = genBeachBlock;
 		min = minCliff;
+	}
+	
+	public SurfaceDesertMountain(Block top, Block fill, boolean genBeach, Block genBeachBlock, float minCliff, float stoneCliff, float stoneHeight, float stoneStrength, float clayCliff)
+	{
+		this(top, fill, genBeach, genBeachBlock, minCliff);
 		
 		sCliff = stoneCliff;
 		sHeight = stoneHeight;
 		sStrength = stoneStrength;
 		cCliff = clayCliff;
-		
-		mix = mixBlock;
-		mixHeight = mixSize;
 	}
 	
 	@Override
@@ -47,7 +47,13 @@ public class SurfaceMountainStoneMix1 extends SurfaceBase
 		float c = CliffCalculator.calc(x, y, noise);
 		int cliff = 0;
 		boolean gravel = false;
-		boolean m = false;
+		boolean grass = false;
+		
+		if(river > 0.05f && river + (perlin.noise2(i / 10f, j / 10f) * 0.15f) > 0.8f)
+		{
+			grass = true;
+			base[x * 16 + y] = RWGBiomes.baseOasis;
+		}
 		
     	Block b;
 		for(int k = 255; k > -1; k--)
@@ -89,6 +95,17 @@ public class SurfaceMountainStoneMix1 extends SurfaceBase
         				blocks[(y * 16 + x) * 256 + k] = Blocks.stained_hardened_clay; 
         				metadata[(y * 16 + x) * 256 + k] = 9; 
             		}
+                	else if(grass)
+                	{
+    	        		if(depth == 0 && k > 61)
+    	        		{
+    	        			blocks[(y * 16 + x) * 256 + k] = Blocks.grass;
+    	        		}
+    	        		else if(depth < 4)
+    	        		{
+    	        			blocks[(y * 16 + x) * 256 + k] = Blocks.dirt;
+    	        		}
+                	}
             		else if(k < 63)
             		{
             			if(beach)
@@ -105,11 +122,6 @@ public class SurfaceMountainStoneMix1 extends SurfaceBase
                 			blocks[(y * 16 + x) * 256 + k] = topBlock;
             			}
             		}
-            		else if(perlin.noise2(i / 12f, j / 12f) > mixHeight)
-        			{
-        				blocks[(y * 16 + x) * 256 + k] = mix;
-        				m = true;
-        			}
             		else
             		{
             			blocks[(y * 16 + x) * 256 + k] = topBlock;
@@ -126,13 +138,20 @@ public class SurfaceMountainStoneMix1 extends SurfaceBase
         				blocks[(y * 16 + x) * 256 + k] = Blocks.stained_hardened_clay; 
         				metadata[(y * 16 + x) * 256 + k] = 9; 
             		}
+                	else if(grass)
+                	{
+    	        		if(depth == 0 && k > 61)
+    	        		{
+    	        			blocks[(y * 16 + x) * 256 + k] = Blocks.grass;
+    	        		}
+    	        		else if(depth < 4)
+    	        		{
+    	        			blocks[(y * 16 + x) * 256 + k] = Blocks.dirt;
+    	        		}
+                	}
             		else if(gravel)
             		{
             			blocks[(y * 16 + x) * 256 + k] = beachBlock;
-            		}
-            		else if(m)
-            		{
-        				blocks[(y * 16 + x) * 256 + k] = mix;
             		}
             		else
             		{

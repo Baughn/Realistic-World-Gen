@@ -10,9 +10,9 @@ public class TerrainSwampRiver extends TerrainBase
 	}
 	
 	@Override
-	public float generateNoise(PerlinNoise perlin, CellNoise cell, int x, int y, float ocean, float border)
+	public float generateNoise(PerlinNoise perlin, CellNoise cell, int x, int y, float ocean, float border, float river)
 	{
-		float h = perlin.noise2(x / 180f, y / 180f) * 40f;
+		float h = perlin.noise2(x / 180f, y / 180f) * 40f * river;
 		h *= h / 35f;
 		
 		if(h < 1f)

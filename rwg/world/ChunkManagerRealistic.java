@@ -5,34 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import rwg.biomes.realistic.RealisticBiomeBase;
-import rwg.biomes.realistic.land.RealisticBiomeCanyon;
-import rwg.biomes.realistic.land.RealisticBiomeDesertMountains;
-import rwg.biomes.realistic.land.RealisticBiomeDunes;
-import rwg.biomes.realistic.land.RealisticBiomeMesa;
-import rwg.biomes.realistic.land.RealisticBiomePolar;
-import rwg.biomes.realistic.land.RealisticBiomeRedwood;
-import rwg.biomes.realistic.land.RealisticBiomeRedwoodSnow;
-import rwg.biomes.realistic.land.RealisticBiomeSavanna;
-import rwg.biomes.realistic.land.RealisticBiomeSavannaDunes;
-import rwg.biomes.realistic.land.RealisticBiomeSavannaForest;
-import rwg.biomes.realistic.land.RealisticBiomeSnowHills;
-import rwg.biomes.realistic.land.RealisticBiomeSnowLakes;
-import rwg.biomes.realistic.land.RealisticBiomeSnowRivers;
-import rwg.biomes.realistic.land.RealisticBiomeStoneMountains;
-import rwg.biomes.realistic.land.RealisticBiomeTaigaHills;
-import rwg.biomes.realistic.land.RealisticBiomeTaigaPlains;
-import rwg.biomes.realistic.land.RealisticBiomeTundraHills;
-import rwg.biomes.realistic.land.RealisticBiomeTundraPlains;
-import rwg.biomes.realistic.old.OldRealisticBiomePolar;
-import rwg.biomes.realistic.old.OldRealisticBiomeSnowHills;
-import rwg.biomes.realistic.old.OldRealisticBiomeSnowLakes;
-import rwg.biomes.realistic.old.OldRealisticBiomeSnowPlains;
-import rwg.biomes.realistic.old.OldRealisticBiomeTaigaHills;
-import rwg.biomes.realistic.old.OldRealisticBiomeTaigaLakes;
-import rwg.biomes.realistic.old.OldRealisticBiomeTaigaPlains;
-import rwg.biomes.realistic.old.OldRealisticBiomeTundraHills;
-import rwg.biomes.realistic.old.OldRealisticBiomeTundraLakes;
-import rwg.biomes.realistic.old.OldRealisticBiomeTundraPlains;
+import rwg.biomes.realistic.land.*;
 import rwg.support.Support;
 import rwg.util.CellNoise;
 import rwg.util.PerlinNoise;
@@ -168,8 +141,9 @@ public class ChunkManagerRealistic extends WorldChunkManager
     
     public RealisticBiomeBase getBiomeDataAt(int par1, int par2, float ocean)
     {
-    	//return RealisticBiomeBase.savannaDunes;
-    	
+    	return RealisticBiomeBase.desertMountains;
+
+    	/*
     	float b = (biomecell.noise(par1 / 1500D, par2 / 1500D, 1D) * 0.5f) + 0.5f;
     	b = b < 0f ? 0f : b >= 0.9999999f ? 0.9999999f : b;
 
@@ -213,6 +187,7 @@ public class ChunkManagerRealistic extends WorldChunkManager
         	h *= biomes_hotLength;
         	return biomes_hot.get((int)(h));
     	}
+    	*/
     	
     	/*if(par1 + par2 < 0)
     	{
@@ -296,8 +271,34 @@ public class ChunkManagerRealistic extends WorldChunkManager
     
     public float getNoiseAt(int x, int y)
     {
+    	float river = getRiverStrength(x, y) + 1f;
+    	if(river < 0.5f)
+    	{
+    		return 59f;
+    	}
+    	
     	float ocean = getOceanValue(x, y);
-    	return getBiomeDataAt(x, y, ocean).rNoise(perlin, cell, x, y, ocean, 1f);
+    	return getBiomeDataAt(x, y, ocean).rNoise(perlin, cell, x, y, ocean, 1f, river);
+    }
+    
+    public float calculateRiver(int x, int y, float st, float biomeHeight)
+    {
+    	if(st < 0f && biomeHeight > 59f)
+    	{
+    		float pX = x + (perlin.noise1(y / 240f) * 220f);
+    		float pY = y + (perlin.noise1(x / 240f) * 220f);
+    		float r = cell.border(pX / 1250D, pY / 1250D, 50D / 1300D, 1f);
+    		return (biomeHeight * (r + 1f)) + ((59f + perlin.noise2(x / 12f, y / 12f) * 2f + perlin.noise2(x / 8f, y / 8f) * 1.5f) * (-r));
+    	}
+    	else
+    	{
+    		return biomeHeight;
+    	}
+    }
+    
+    public float getRiverStrength(int x, int y)
+    {
+    	return cell.border((x + (perlin.noise1(y / 240f) * 220f)) / 1250D, (y + (perlin.noise1(x / 240f) * 220f)) / 1250D, 50D / 300D, 1f);
     }
     
     public List getBiomesToSpawnIn()

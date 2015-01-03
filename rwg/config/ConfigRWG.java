@@ -18,7 +18,7 @@ import net.minecraftforge.common.config.Configuration;
 public class ConfigRWG 
 {
 	public static Configuration config;
-	public static int[] biomeIDs = new int[11];
+	public static int[] biomeIDs = new int[12];
 	
 	public static void init(FMLPreInitializationEvent event)
 	{
@@ -44,6 +44,7 @@ public class ConfigRWG
 			biomeIDs[8] = config.get("Biome IDs", "08 rwg_tropical", 238).getInt();
 			biomeIDs[9] = config.get("Biome IDs", "09 rwg_redwood", 239).getInt();
 			biomeIDs[10] = config.get("Biome IDs", "10 rwg_jungle", 240).getInt();
+			biomeIDs[11] = config.get("Biome IDs", "11 rwg_oasis", 241).getInt();
 		}
 		catch (Exception e) 
 		{

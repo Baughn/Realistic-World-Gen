@@ -39,7 +39,7 @@ public class RealisticBiomeSavanna extends RealisticBiomeBase
 	}
 
 	@Override
-    public void rDecorate(World world, Random rand, int chunkX, int chunkY, PerlinNoise perlin, CellNoise cell, float strength)
+    public void rDecorate(World world, Random rand, int chunkX, int chunkY, PerlinNoise perlin, CellNoise cell, float strength, float river)
     {
 		for (int i23 = 0; i23 < 1; i23++)
 		{
@@ -125,13 +125,13 @@ public class RealisticBiomeSavanna extends RealisticBiomeBase
 		}
     }
     
-    public float rNoise(PerlinNoise perlin, CellNoise cell, int x, int y, float ocean, float border)
+    public float rNoise(PerlinNoise perlin, CellNoise cell, int x, int y, float ocean, float border, float river)
     {
-    	return terrain.generateNoise(perlin, cell, x, y, ocean, border);
+    	return terrain.generateNoise(perlin, cell, x, y, ocean, border, river);
     }
     
-    public void rReplace(Block[] blocks, byte[] metadata, int i, int j, int x, int y, int depth, World world, Random rand, PerlinNoise perlin, CellNoise cell, float[] noise)
+    public void rReplace(Block[] blocks, byte[] metadata, int i, int j, int x, int y, int depth, World world, Random rand, PerlinNoise perlin, CellNoise cell, float[] noise, float river, BiomeGenBase[] base)
     {
-    	surface.paintTerrain(blocks, metadata, i, j, x, y, depth, world, rand, perlin, cell, noise);
+    	surface.paintTerrain(blocks, metadata, i, j, x, y, depth, world, rand, perlin, cell, noise, river, base);
     }
 }

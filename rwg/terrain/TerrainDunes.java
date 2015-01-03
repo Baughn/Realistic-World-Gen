@@ -10,7 +10,7 @@ public class TerrainDunes extends TerrainBase
 		
 	}
 
-	public float generateNoise(PerlinNoise perlin, CellNoise cell, int x, int y, float ocean, float border)
+	public float generateNoise(PerlinNoise perlin, CellNoise cell, int x, int y, float ocean, float border, float river)
 	{
 		float st = (perlin.noise2(x / 160f, y / 160f) + 0.38f) * 35f;
 		st = st < 0.2f ? 0.2f : st;
@@ -30,6 +30,6 @@ public class TerrainDunes extends TerrainBase
 			h += perlin.noise2(x / 14f, y / 14f) * d * 0.5f;
 		}
 		
-		return 70f + h;
+		return 70f + (h * river);
 	}
 }
