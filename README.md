@@ -1,5 +1,10 @@
 ## CHANGELOG ##
      
+        Version Alpha 1.3 '03-01-2015'
+        - Added rivers
+        - Fixed animals spawing in deserts
+        - Fixed ore gen events
+           
         Version Alpha 1.2.02 '31-12-2014'
         - Fixed decorate event bugs
         
