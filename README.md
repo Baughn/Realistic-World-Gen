@@ -1,5 +1,8 @@
 ## CHANGELOG ##
-     
+
+        Version Alpha 1.3.01 '09-01-2015'
+        - Added thaumcraft support
+        
         Version Alpha 1.3 '03-01-2015'
         - Added rivers
         - Fixed animals spawing in deserts
