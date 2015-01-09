@@ -41,7 +41,9 @@ public class RealisticBiomeBase
 	//WARM 8 =========================================================================================
 	public static RealisticBiomeBase desert;
 	public static RealisticBiomeBase desertMountains = new RealisticBiomeDesertMountains();
+	
 	public static RealisticBiomeBase dunes = new RealisticBiomeDunes();
+	public static RealisticBiomeBase dunesForest = new RealisticBiomeDunesForest();
 	
 	public static RealisticBiomeBase stoneMountains = new RealisticBiomeStoneMountains();
 	
@@ -60,6 +62,7 @@ public class RealisticBiomeBase
 	public static RealisticBiomeBase jungle;
 	public static RealisticBiomeBase jungleFields;
 	public static RealisticBiomeBase jungleHills = new RealisticBiomeJungleHills();
+	public static RealisticBiomeBase jungleCanyon;
 	
 	public static RealisticBiomeBase redwoodJungle; //dutch note to self: minder stam meer bladeren en varens
 	

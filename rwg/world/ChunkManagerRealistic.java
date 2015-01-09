@@ -30,14 +30,17 @@ public class ChunkManagerRealistic extends WorldChunkManager
     private ArrayList<RealisticBiomeBase> biomes_cold;
     private ArrayList<RealisticBiomeBase> biomes_hot;
     private ArrayList<RealisticBiomeBase> biomes_wet;
+    private ArrayList<RealisticBiomeBase> biomes_small;
     private ArrayList<RealisticBiomeBase> biomes_test;
     private int biomes_snowLength;
     private int biomes_coldLength;
     private int biomes_hotLength;
     private int biomes_wetLength;
+    private int biomes_smallLength;
     private int biomes_testLength;
     
     private boolean wetEnabled;
+    private boolean smallEnabled;
 	
 	protected ChunkManagerRealistic()
 	{
@@ -59,8 +62,9 @@ public class ChunkManagerRealistic extends WorldChunkManager
     	biomes_cold = new ArrayList<RealisticBiomeBase>();
     	biomes_hot = new ArrayList<RealisticBiomeBase>();
     	biomes_wet = new ArrayList<RealisticBiomeBase>();
+    	biomes_small = new ArrayList<RealisticBiomeBase>();
     	biomes_test = new ArrayList<RealisticBiomeBase>();
-    	
+
     	biomes_snow.add(RealisticBiomeBase.polar);
     	biomes_snow.add(RealisticBiomeBase.tundraHills);
     	biomes_snow.add(RealisticBiomeBase.tundraPlains);
@@ -86,18 +90,26 @@ public class ChunkManagerRealistic extends WorldChunkManager
     	biomes_cold.addAll(Support.biomes_cold);
     	biomes_hot.addAll(Support.biomes_hot);
     	biomes_wet.addAll(Support.biomes_wet);
+    	biomes_small.addAll(Support.biomes_small);
     	biomes_test.addAll(Support.biomes_test);
     	
     	biomes_snowLength = biomes_snow.size();
     	biomes_coldLength = biomes_cold.size();
     	biomes_hotLength = biomes_hot.size();
     	biomes_wetLength = biomes_wet.size();
+    	biomes_smallLength = biomes_small.size();
     	biomes_testLength = biomes_test.size();
     	
     	wetEnabled = false;
     	if(biomes_wetLength > 0)
     	{
     		wetEnabled = true;
+    	}
+    	
+    	smallEnabled = false;
+    	if(biomes_smallLength > 1)
+    	{
+    		smallEnabled = true;
     	}
     }    
 	
@@ -146,12 +158,18 @@ public class ChunkManagerRealistic extends WorldChunkManager
     
     public RealisticBiomeBase getBiomeDataAt(int par1, int par2, float ocean)
     {
-        //return RealisticBiomeBase.tundraPlains;
-
-    	float b = (biomecell.noise((par1 + 1000f) / 1600D, par2 / 1600D, 1D) * 0.5f) + 0.5f;
+    	float b = (biomecell.noise((par1 + 4000f) / 1600D, par2 / 1600D, 1D) * 0.5f) + 0.5f;
     	b = b < 0f ? 0f : b >= 0.9999999f ? 0.9999999f : b;
 
-    	if((wetEnabled && b < 0.25f) || b < 0.33f)
+    	float s = smallEnabled ? (biomecell.noise(par1 / 140D, par2 / 140D, 1D) * 0.5f) + 0.5f : 0f;
+    	if(smallEnabled && s > 0.975f)
+    	{
+        	float h = (s - 0.975f) * 40f;
+        	h = h < 0f ? 0f : h >= 0.9999999f ? 0.9999999f : h;
+        	h *= biomes_smallLength;
+        	return biomes_small.get((int)(h));
+    	}
+    	else if((wetEnabled && b < 0.25f) || b < 0.33f)
     	{
         	float h = (biomecell.noise(par1 / 550D, par2 / 550D, 1D) * 0.5f) + 0.5f;
         	h = h < 0f ? 0f : h >= 0.9999999f ? 0.9999999f : h;
