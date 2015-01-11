@@ -1,0 +1,11 @@
+# Editor artifacts
+*~
+eclipse/
+# Build artifacts
+build/
+.gradle/
+*.class
+# Intellij
+*.iml
+*.ipr
+*.iws
